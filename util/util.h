@@ -2032,9 +2032,9 @@ template <class KT, class VT> auto findInMapByValue(map<KT, VT> &m, VT &val)
 
 #ifdef __APPLE__
 
-#define KINPUT "/Users/gabriel/Repos/aoc-2021/inputs/Day"
-#define KOUTPUT "/Users/gabriel/Repos/aoc-2021/output/output.txt"
-#define KVERBOSE "/Users/gabriel/Repos/aoc-2021/output/verbose.txt"
+#define KINPUT "/Users/gabriel/aoc/inputs/Day"
+#define KOUTPUT "/Users/gabriel/aoc/output/output.txt"
+#define KVERBOSE "/Users/gabriel/aoc/output/verbose.txt"
 
 #endif
 
