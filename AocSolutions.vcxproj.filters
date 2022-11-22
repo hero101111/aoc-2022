@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Week1">
+      <UniqueIdentifier>{a99b40e0-f625-495b-a0c9-61c1a89215f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{4a1906ac-ab66-468a-b8dc-acbdcb4fcf0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Week2">
+      <UniqueIdentifier>{99a821fe-dcca-4760-b8eb-ad8c2b421c5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Week3">
+      <UniqueIdentifier>{6673a70e-dad0-40ec-8ec1-7d6efe2742b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Week4">
+      <UniqueIdentifier>{be07ddd4-51f4-444d-98b4-e406bb3d53dc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolutionDay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="days\2\Day2.h">
+      <Filter>Header Files\Week1</Filter>
+    </ClInclude>
+    <ClInclude Include="days\3\Day3.h">
+      <Filter>Header Files\Week1</Filter>
+    </ClInclude>
+    <ClInclude Include="days\4\Day4.h">
+      <Filter>Header Files\Week1</Filter>
+    </ClInclude>
+    <ClInclude Include="days\5\Day5.h">
+      <Filter>Header Files\Week1</Filter>
+    </ClInclude>
+    <ClInclude Include="days\6\Day6.h">
+      <Filter>Header Files\Week1</Filter>
+    </ClInclude>
+    <ClInclude Include="days\7\Day7.h">
+      <Filter>Header Files\Week1</Filter>
+    </ClInclude>
+    <ClInclude Include="util\util.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="days\8\Day8.h">
+      <Filter>Header Files\Week2</Filter>
+    </ClInclude>
+    <ClInclude Include="days\9\Day9.h">
+      <Filter>Header Files\Week2</Filter>
+    </ClInclude>
+    <ClInclude Include="days\10\Day10.h">
+      <Filter>Header Files\Week2</Filter>
+    </ClInclude>
+    <ClInclude Include="days\11\Day11.h">
+      <Filter>Header Files\Week2</Filter>
+    </ClInclude>
+    <ClInclude Include="days\12\Day12.h">
+      <Filter>Header Files\Week2</Filter>
+    </ClInclude>
+    <ClInclude Include="days\13\Day13.h">
+      <Filter>Header Files\Week2</Filter>
+    </ClInclude>
+    <ClInclude Include="days\14\Day14.h">
+      <Filter>Header Files\Week2</Filter>
+    </ClInclude>
+    <ClInclude Include="days\15\Day15.h">
+      <Filter>Header Files\Week3</Filter>
+    </ClInclude>
+    <ClInclude Include="days\16\Day16.h">
+      <Filter>Header Files\Week3</Filter>
+    </ClInclude>
+    <ClInclude Include="days\17\Day17.h">
+      <Filter>Header Files\Week3</Filter>
+    </ClInclude>
+    <ClInclude Include="days\18\Day18.h">
+      <Filter>Header Files\Week3</Filter>
+    </ClInclude>
+    <ClInclude Include="days\19\Day19.h">
+      <Filter>Header Files\Week3</Filter>
+    </ClInclude>
+    <ClInclude Include="days\20\Day20.h">
+      <Filter>Header Files\Week3</Filter>
+    </ClInclude>
+    <ClInclude Include="days\21\Day21.h">
+      <Filter>Header Files\Week4</Filter>
+    </ClInclude>
+    <ClInclude Include="days\22\Day22.h">
+      <Filter>Header Files\Week4</Filter>
+    </ClInclude>
+    <ClInclude Include="days\23\Day23.h">
+      <Filter>Header Files\Week4</Filter>
+    </ClInclude>
+    <ClInclude Include="days\24\Day24.h">
+      <Filter>Header Files\Week4</Filter>
+    </ClInclude>
+    <ClInclude Include="days\25\Day25.h">
+      <Filter>Header Files\Week4</Filter>
+    </ClInclude>
+    <ClInclude Include="days\1\Day1.h">
+      <Filter>Header Files\Week1</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
