@@ -1,10 +1,12 @@
 param($day)
-  
+
+[bool] $autoDownload = $false
 if ($day -eq $null) {
   $day = (Get-Date).Day
+  $autoDownload = $true
 }
 
-while ( (Get-Date).Hour -lt 7 ) {
+while ( $autoDownload -and (Get-Date).Hour -lt 7 ) {
   Write-Output "zzZ"
   Start-Sleep -Seconds 5
 }

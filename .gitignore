@@ -2,3 +2,5 @@ macOS/aoc22.xcodeproject/project.xcworkspace/*
 macOS/aoc22.xcodeproj/project.xcworkspace/contents.xcworkspacedata
 macOS/aoc22.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 macOS/aoc22.xcodeproj/project.xcworkspace/xcuserdata/gabriel.xcuserdatad/UserInterfaceState.xcuserstate
+.vs/*
+x64/*

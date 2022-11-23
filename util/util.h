@@ -2040,8 +2040,8 @@ template <class KT, class VT> auto findInMapByValue(map<KT, VT> &m, VT &val)
 
 #ifdef _MSC_VER
 
-#define KINPUT "C:\\repos\\aoc-2021\\inputs\\Day"
-#define KOUTPUT "C:\\repos\\aoc-2021\\output\\out.txt"
-#define KVERBOSE "C:\\repos\\aoc-2021\\output\\verbose.txt"
+#define KINPUT "C:\\repos\\aoc\\inputs\\Day"
+#define KOUTPUT "C:\\repos\\aoc\\output\\out.txt"
+#define KVERBOSE "C:\\repos\\aoc\\output\\verbose.txt"
 
 #endif
