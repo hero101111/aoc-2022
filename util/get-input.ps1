@@ -31,6 +31,7 @@ $cookie = New-Object System.Net.Cookie
 $cookie.Name = "session"
 $cookie.Value = $env:AOC_SESSION
 $cookie.Domain = ".adventofcode.com"
+$session.Headers.Add("User-Agent", [System.Web.HttpUtility]::UrlEncode($env:AOC_EMAIL))
 
 $session.Cookies.Add($cookie);
 
