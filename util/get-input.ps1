@@ -1,20 +1,28 @@
-param($day)
+param($day, $year)
 
-[bool] $autoDownload = $false
-if ($day -eq $null) {
+[bool] $crtDay = $false
+if ($day -eq $null) 
+{
   $day = (Get-Date).Day
-  $autoDownload = $true
+  $crtDay = $true
+}
+if ($year -eq $null)
+{
+  $year = (Get-Date).Year
 }
 
-while ( $autoDownload -and (Get-Date).Hour -lt 7 ) {
-  Write-Output "zzZ"
-  Start-Sleep -Seconds 5
+if ($crtDay)
+{
+  while ( (Get-Date).Hour -lt 7 ) {
+    Write-Output "zzZ for year $year day $day"
+    Start-Sleep -Seconds 5
+  }
 }
 $downloadToPath = "..\inputs\Day$day\input.txt"
 if (!(Test-Path "..\inputs\Day$day")) {
   New-Item -Path "..\inputs\" -name "Day$day" -ItemType "directory" 
 }
-$remoteFileLocation = "https://adventofcode.com/2021/day/$day/input"
+$remoteFileLocation = "https://adventofcode.com/$year/day/$day/input"
   
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
     
@@ -28,4 +36,4 @@ $session.Cookies.Add($cookie);
 
 Invoke-WebRequest $remoteFileLocation -WebSession $session -TimeoutSec 900 -OutFile $downloadToPath
 
-Write-Output "Got input for day $day"
+Write-Output "Got input for year $year day $day into path $downloadToPath"
