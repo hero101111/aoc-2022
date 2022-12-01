@@ -6,7 +6,7 @@ class Day1 : public ISolutionDay
 {
 private:
 
-  vector<string> mData;
+  vector<LL> mElfs;
 
 public:
 
@@ -16,8 +16,20 @@ public:
 
   void ReadData()
   {
-    mData.clear();
-    mData = rff(GetInputPath());
+    vector<string> data = rff(GetInputPath());
+    LL crt = 0;
+    for (auto crtS : data)
+    {
+      if (crtS.size() > 0)
+        crt += stoll(crtS);
+      else
+      {
+        mElfs.push_back(crt);
+        crt = 0;
+      }
+    }
+    if (crt > 0)
+      mElfs.push_back(crt);
   }
   
   string GetDay() override
@@ -27,14 +39,13 @@ public:
 
   LL DoWork1()
   {
-    LL ret = 11;
-    return ret;
+    return *max_element(begin(mElfs), end(mElfs));
   }
 
   LL DoWork2()
   {
-    LL ret = 12;
-    return ret;
+    nth_element(begin(mElfs), begin(mElfs) + 2, end(mElfs), greater<LL>());
+    return reduce(begin(mElfs), begin(mElfs) + 3, 0, [](LL a, LL b){ return a + b;});
   }
   
   string Part1() override
@@ -54,8 +65,8 @@ public:
   bool Test() override
   {
     mCurrentInput = "test";
-    assert(Part1() != "");
-    assert(Part2() != "");
+    //assert(Part1() != "");
+    //assert(Part2() != "");
     return true;
   }
 };
