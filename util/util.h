@@ -787,6 +787,36 @@ auto RegexMatch(string s, string regex) -> vector<string>
     return ret;
 }
 
+tuple<LL> tuple_toll(tuple<string> t)
+{
+  return make_tuple(stoll(get<0>(t)));
+}
+
+tuple<LL, LL> tuple_toll(tuple<string, string> t)
+{
+  return make_tuple(stoll(get<0>(t)), stoll(get<1>(t)));
+}
+
+tuple<LL, LL, LL> tuple_toll(tuple<string, string, string> t)
+{
+  return make_tuple(stoll(get<0>(t)), stoll(get<1>(t)), stoll(get<2>(t)));
+}
+
+tuple<LL, LL, LL, LL> tuple_toll(tuple<string, string, string, string> t)
+{
+  return make_tuple(stoll(get<0>(t)), stoll(get<1>(t)), stoll(get<2>(t)), stoll(get<3>(t)));
+}
+
+tuple<LL, LL, LL, LL, LL> tuple_toll(tuple<string, string, string, string, string> t)
+{
+  return make_tuple(stoll(get<0>(t)), stoll(get<1>(t)), stoll(get<2>(t)), stoll(get<3>(t)), stoll(get<4>(t)));
+}
+
+tuple<LL, LL, LL, LL, LL, LL> tuple_toll(tuple<string, string, string, string, string, string> t)
+{
+  return make_tuple(stoll(get<0>(t)), stoll(get<1>(t)), stoll(get<2>(t)), stoll(get<3>(t)), stoll(get<4>(t)), stoll(get<5>(t)));
+}
+
 auto RegExMatch1(string s, string regex) -> tuple<string>
 {
     auto data = RegexMatch(s, regex);
@@ -917,6 +947,33 @@ auto rff(string filePath, function<void(string &)> func = nullptr) -> vector<str
     }
 
     return ret;
+}
+
+auto rffv(string filePath, function<void(string&)> func = nullptr) -> vector<vector<string>>
+{
+  vector<vector<string>> ret;
+  ifstream f;
+  f.open(filePath);
+  string s;
+
+  vector<string> v;
+  while (getline(f, s))
+  {
+    if (func != nullptr)
+    {
+      func(s);
+    }
+
+    if (!s.empty())
+      v.push_back(s);
+    else
+    {
+      ret.push_back(v);
+      v.clear();
+    }
+  }
+
+  return ret;
 }
 
 auto rffll(string filePath, function<void(string &)> func = nullptr) -> vector<LL>
@@ -1296,20 +1353,53 @@ template <class T> class DynamicMap
         return ret;
     }
 
+    void fromlines(vector<string> lines, function<T(char)> readFunc = nullptr)
+    {
+      int crtLine = 0;
+      for (auto& line : lines)
+      {
+        int crtChar = 0;
+        for (char c : line)
+        {
+          (*this)[{crtChar++, crtLine}] = readFunc ? readFunc(c) : c;
+        }
+
+        ++crtLine;
+      }
+    }
+
+    void addlinetokenized(string line, char tokenDelimiter)
+    {
+      int crtLine = max_y == numeric_limits<int>::min() ? 0 : max_y + 1;
+
+      vector<string> tokens = tok(line, tokenDelimiter);
+      int crtChar = 0;
+      for (auto tok : tokens)
+      {
+        if (!tok.empty())
+          (*this)[{crtChar++, crtLine}] = stoll(tok);
+      }
+    }
+
+    void fromlinestokenized(vector<string> lines, char tokenDelimiter)
+    {
+      int crtLine = 0;
+      for (auto& line : lines)
+      {
+        addlinetokenized(line, tokenDelimiter);
+      }
+    }
+
     void fromfile(string filepath, function<T(char)> readFunc = nullptr)
     {
         vector<string> lines = rff(filepath);
-        int crtLine = 0;
-        for (auto &line : lines)
-        {
-            int crtChar = 0;
-            for (char c : line)
-            {
-                (*this)[{crtChar++, crtLine}] = readFunc ? readFunc(c) : c;
-            }
+        fromlines(lines);
+    }
 
-            ++crtLine;
-        }
+    void fromfiletokenized(string filepath, char tokenDelimiter)
+    {
+      vector<string> lines = rff(filepath);
+      fromlinestokenized(lines, tokenDelimiter);
     }
 
     void addline(string line, function<T(char)> readFunc = nullptr)
@@ -1365,7 +1455,7 @@ template <class T> class DynamicMap
         return ret;
     }
 
-    void printf(string filePath, char empty = ' ', bool append = false, string prologue = "")
+    void printf(string filePath, char sep = ' ', char notSet = ' ', bool append = false, string prologue = "")
     {
         ofstream fOut;
         fOut.open(filePath, append ? ios_base::app : ios_base::out);
@@ -1386,10 +1476,10 @@ template <class T> class DynamicMap
                 T data;
                 if (!at({i, j}, &data))
                 {
-                    data = empty;
+                    data = notSet;
                 }
 
-                fOut << data;
+                fOut << data << sep;
             }
             fOut << endl;
         }
