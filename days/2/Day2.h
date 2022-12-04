@@ -27,13 +27,42 @@ public:
 
   LL DoWork1()
   {
-    LL ret = 21;
+    LL ret = 0;
+    for (auto d : mData)
+    {
+      int mine   = d[2] - 'X';
+      int theirs = d[0] - 'A';
+
+      bool isWin = mine == (theirs + 1) % 3;
+      
+      ret += (mine + 1) + (isWin ? 6 : (mine == theirs ? 3 : 0));
+    }
     return ret;
   }
 
   LL DoWork2()
   {
-    LL ret = 22;
+    LL ret = 0;
+    for (auto d : mData)
+    {
+      int strategy = d[2] - 'X';
+      int theirs   = d[0] - 'A';
+
+      bool isWin  = strategy == 2;
+      bool isDraw = strategy == 1;
+      bool isLose = strategy == 0;
+      
+      int mine = theirs;
+      if (isWin)
+        mine = (theirs + 1) % 3;
+      else if (isLose)
+      {
+        mine = theirs - 1;
+        if (mine == -1) mine = 2;
+      }
+      
+      ret += (mine + 1) + (isWin ? 6 : (mine == theirs ? 3 : 0));
+    }
     return ret;
   }
   
@@ -54,8 +83,8 @@ public:
   bool Test() override
   {
     mCurrentInput = "test";
-    assert(Part1() != "");
-    assert(Part2() != "");
+    //assert(Part1() != "");
+    //assert(Part2() != "");
     return true;
   }
 };
