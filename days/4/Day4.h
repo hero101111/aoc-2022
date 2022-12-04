@@ -25,13 +25,18 @@ public:
     return "4";
   }
 
+  auto Retrieve(string input)
+  {
+    return tuple_toll(RegExMatch4(input, R"((-?\d+)-(-?\d+),(-?\d+)-(-?\d+))"));
+  }
+
   LL DoWork1()
   {
     LL ret = 0;
     
     for (auto d : mData)
     {
-      auto [a1, a2, b1, b2] = tuple_toll(RegExMatch4(d, R"((-?\d+)-(-?\d+),(-?\d+)-(-?\d+))"));
+      auto [a1, a2, b1, b2] = Retrieve(d);
       if (b1 >= a1 && b2 <= a2)
         ret++;
       else if (a1 >= b1 && a2 <= b2)
@@ -46,7 +51,7 @@ public:
 
     for (auto d : mData)
     {
-      auto [a1, a2, b1, b2] = tuple_toll(RegExMatch4(d, R"((-?\d+)-(-?\d+),(-?\d+)-(-?\d+))"));
+      auto [a1, a2, b1, b2] = Retrieve(d);
       if (b1 >= a1 && b1 <= a2)
         ret++;
       else if (a1 >= b1 && a1 <= b2)
