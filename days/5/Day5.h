@@ -29,19 +29,19 @@ public:
   {
     string ret = "";
     
-    int minN = 1, maxN = 9;
+    LL minN = 1, maxN = 9;
     
-    map<int, int> indices;
-    for (int i : rangeint(minN, maxN))
+    map<LL, LL> indices;
+    for (LL i : rangeint(minN, maxN))
       indices[i] = 1 + (i - 1) * 4;
     
-    map<int, vector<char>> data;
+    map<LL, vector<char>> data;
     
     for (auto d : mData)
     {
       if (d.size() > 1 && d[0] == '[')
       {
-        for (int i : rangeint(minN, maxN))
+        for (LL i : rangeint(minN, maxN))
         {
           char c = d[indices[i]];
           if (c != ' ')

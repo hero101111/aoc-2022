@@ -1383,7 +1383,6 @@ template <class T> class DynamicMap
 
     void fromlinestokenized(vector<string> lines, char tokenDelimiter)
     {
-      int crtLine = 0;
       for (auto& line : lines)
       {
         addlinetokenized(line, tokenDelimiter);

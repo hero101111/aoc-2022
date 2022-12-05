@@ -49,7 +49,6 @@ public:
       int theirs   = d[0] - 'A';
 
       bool isWin  = strategy == 2;
-      bool isDraw = strategy == 1;
       bool isLose = strategy == 0;
       
       int mine = theirs;

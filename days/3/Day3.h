@@ -45,7 +45,7 @@ public:
         if (right.find(c) != end(right))
           inter.insert(c);
       
-      LL val;
+      LL val = 0;
       for (auto c : inter)
       {
         if (c >= 'A' and c <= 'Z')
