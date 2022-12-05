@@ -49,9 +49,13 @@ int main(int argc, char** argv)
       runner.second->Test();
     }
   }
-  int DAY  = 1;
-  int PART = 2;
-
+  
+  time_t now = time(0);
+  tm *ltm = localtime(&now);
+  
+  ///////////////////////////////
+  int DAY  = ltm->tm_mday;
+  int PART = 1;
   ///////////////////////////////
 
   auto & runner = solutions[DAY];
