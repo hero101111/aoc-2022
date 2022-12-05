@@ -54,20 +54,13 @@ public:
       auto [many, from, to] = tuple_toll(RegExMatch3(d, R"(move (\d+) from (\d+) to (\d+))"));
       
       vector<char> temp;
-      while (many > 0)
+      while (many-- > 0)
       {
         if (!data[from].empty())
         {
-          auto t = data[from].back();
-          
-          if (isPartOne)
-            temp.push_back(t);
-          else
-            temp.insert(begin(temp), t);
-          
+          temp.insert(isPartOne ? end(temp) : begin(temp), data[from].back());
           data[from].erase(data[from].end() - 1);
         }
-        many -= 1;
       }
       
       for (auto c : temp)
