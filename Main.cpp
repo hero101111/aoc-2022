@@ -50,9 +50,10 @@ int main(int argc, char** argv)
     }
   }
   
+#pragma warning(disable:4996)
   time_t now = time(0);
   tm *ltm = localtime(&now);
-  
+#pragma warning(default:4996)
   ///////////////////////////////
   int DAY  = ltm->tm_mday;
   int PART = 1;
