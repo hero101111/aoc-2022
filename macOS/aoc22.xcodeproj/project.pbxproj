@@ -23,12 +23,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C0779FC5293EFE1800227F63 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util.h; path = ../util/util.h; sourceTree = "<group>"; };
 		C0EBC741292D6A410031A98F /* aoc22 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = aoc22; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0EBC74B292D6AAB0031A98F /* SolutionDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SolutionDay.h; path = ../SolutionDay.h; sourceTree = "<group>"; };
 		C0EBC74C292D6AB80031A98F /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stdafx.h; path = ../stdafx.h; sourceTree = "<group>"; };
 		C0EBC74D292D6AC00031A98F /* days */ = {isa = PBXFileReference; lastKnownFileType = folder; name = days; path = ../days; sourceTree = "<group>"; };
 		C0EBC750292D6B180031A98F /* Main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Main.cpp; path = ../Main.cpp; sourceTree = "<group>"; };
-		C0EBC756292D6DA00031A98F /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util.h; path = ../../util/util.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,7 +45,7 @@
 		C0EBC738292D6A410031A98F = {
 			isa = PBXGroup;
 			children = (
-				C0EBC755292D6D900031A98F /* util */,
+				C0779FC5293EFE1800227F63 /* util.h */,
 				C0EBC74B292D6AAB0031A98F /* SolutionDay.h */,
 				C0EBC750292D6B180031A98F /* Main.cpp */,
 				C0EBC74C292D6AB80031A98F /* stdafx.h */,
@@ -60,14 +60,6 @@
 				C0EBC741292D6A410031A98F /* aoc22 */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		C0EBC755292D6D900031A98F /* util */ = {
-			isa = PBXGroup;
-			children = (
-				C0EBC756292D6DA00031A98F /* util.h */,
-			);
-			path = util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

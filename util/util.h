@@ -97,6 +97,13 @@ auto tok(string str, char sep = ' ') -> vector<string>
     return ret;
 }
 
+auto split(string str, char sep = ' ') -> pair<string, string>
+{
+  auto tokens = tok(str, sep);
+  assert(tokens.size() == 2);
+  return make_pair(tokens[0], tokens[1]);
+}
+
 auto getStream(string filePath, bool append) -> ofstream
 {
     ofstream fOut;
@@ -817,6 +824,20 @@ tuple<LL, LL, LL, LL, LL, LL> tuple_toll(tuple<string, string, string, string, s
   return make_tuple(stoll(get<0>(t)), stoll(get<1>(t)), stoll(get<2>(t)), stoll(get<3>(t)), stoll(get<4>(t)), stoll(get<5>(t)));
 }
 
+auto RegExMatchN(string s, string regexExp) -> vector<string>
+{
+  vector<string> ret;
+  regex regexObj(regexExp);
+  for (sregex_iterator it = sregex_iterator(s.begin(), s.end(), regexObj);
+      it != sregex_iterator();
+      ++it )
+  {
+    smatch match = *it;
+    ret.push_back(match.str());
+  }
+  return ret;
+}
+
 auto RegExMatch1(string s, string regex) -> tuple<string>
 {
     auto data = RegexMatch(s, regex);
@@ -972,6 +993,8 @@ auto rffv(string filePath, function<void(string&)> func = nullptr) -> vector<vec
       v.clear();
     }
   }
+  if (v.size() > 0)
+    ret.push_back(v);
 
   return ret;
 }
