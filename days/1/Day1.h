@@ -19,7 +19,7 @@ public:
     mElfs.clear();
     auto data = rffv(GetInputPath());
     for (auto elf : data)
-      mElfs.push_back(reduce(begin(elf), end(elf), 0, [](LL a, string b){ return stoll(b) + a; }));
+      mElfs.push_back(reduce(begin(elf), end(elf), 0ll, [](LL a, string b){ return stoll(b) + a; }));
   }
   
   string GetDay() override
@@ -35,7 +35,7 @@ public:
   LL DoWork2()
   {
     nth_element(begin(mElfs), begin(mElfs) + 2, end(mElfs), greater<LL>());
-    return reduce(begin(mElfs), begin(mElfs) + 3, 0, [](LL a, LL b){ return a + b;});
+    return reduce(begin(mElfs), begin(mElfs) + 3, 0ll, [](LL a, LL b){ return a + b;});
   }
   
   string Part1() override
