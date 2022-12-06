@@ -94,9 +94,9 @@ public:
   
   bool Test() override
   {
-    mCurrentInput = "test";
-    //assert(Part1() != "");
-    //assert(Part2() != "");
+    mCurrentInput = "input";
+    assert(Part1() == "PTWLTDSJV");
+    assert(Part2() == "WZMFVGGZP");
     return true;
   }
 };

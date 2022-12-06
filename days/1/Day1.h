@@ -16,20 +16,10 @@ public:
 
   void ReadData()
   {
-    vector<string> data = rff(GetInputPath());
-    LL crt = 0;
-    for (auto crtS : data)
-    {
-      if (crtS.size() > 0)
-        crt += stoll(crtS);
-      else
-      {
-        mElfs.push_back(crt);
-        crt = 0;
-      }
-    }
-    if (crt > 0)
-      mElfs.push_back(crt);
+    mElfs.clear();
+    auto data = rffv(GetInputPath());
+    for (auto elf : data)
+      mElfs.push_back(reduce(begin(elf), end(elf), 0, [](LL a, string b){ return stoll(b) + a; }));
   }
   
   string GetDay() override
@@ -64,9 +54,9 @@ public:
 
   bool Test() override
   {
-    mCurrentInput = "test";
-    //assert(Part1() != "");
-    //assert(Part2() != "");
+    mCurrentInput = "input";
+    assert(Part1() == "68775");
+    assert(Part2() == "202585");
     return true;
   }
 };

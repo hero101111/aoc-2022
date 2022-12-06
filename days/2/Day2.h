@@ -81,9 +81,9 @@ public:
 
   bool Test() override
   {
-    mCurrentInput = "test";
-    //assert(Part1() != "");
-    //assert(Part2() != "");
+    mCurrentInput = "input";
+    assert(Part1() == "11475");
+    assert(Part2() == "16862");
     return true;
   }
 };

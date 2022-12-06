@@ -56,8 +56,12 @@ public:
   bool Test() override
   {
     mCurrentInput = "test";
-    //assert(Part1() != "");
-    //assert(Part2() != "");
+    assert(Part1() == "11");
+    assert(Part2() == "26");
+    
+    mCurrentInput = "input";
+    assert(Part1() == "1480");
+    assert(Part2() == "2746");
     return true;
   }
 };
