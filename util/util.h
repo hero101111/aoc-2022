@@ -1064,6 +1064,14 @@ auto replacestr(string str, const string &search, string replace) -> string
     return str;
 }
 
+auto getcharfreq(string str) -> unordered_map<char, int>
+{
+  unordered_map<char, int> ret;
+  for (char c : str)
+    ret[c] += 1;
+  return ret;
+}
+
 template <class T> class DynamicMap
 {
   public:

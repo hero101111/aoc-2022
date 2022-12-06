@@ -25,30 +25,32 @@ public:
     return "6";
   }
 
-  LL DoWork1()
+  LL DoWork(int n)
   {
-    LL ret = 61;
-    return ret;
-  }
-
-  LL DoWork2()
-  {
-    LL ret = 62;
-    return ret;
+    string s = mData[0];
+    for (LL c : rangeint(n, s.size() - 1))
+    {
+      string sub = s.substr(c - n + 1, n);
+      auto freq = getcharfreq(sub);
+      bool invalid = any_of(begin(freq), end(freq), [](pair<char, int> p){ return p.second > 1; });
+      if (!invalid)
+        return c + 1;
+    }
+    return 0;
   }
   
   string Part1() override
   {
     ReadData();
 
-    return std::to_string(DoWork1());
+    return to_string(DoWork(4));
   }
 
   string Part2() override
   {
     ReadData();
 
-    return std::to_string(DoWork2());
+    return std::to_string(DoWork(14));
   }
 
   bool Test() override
