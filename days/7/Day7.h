@@ -40,7 +40,7 @@ public:
     
     vector<string> mData = rff(GetInputPath());
     
-    mDiskItems.reserve(10000);
+    mDiskItems.reserve(mData.size());
     
     Item * crtDir {nullptr};
     
