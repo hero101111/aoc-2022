@@ -11,13 +11,13 @@ struct Item
   LL getTotalSize()
   {
     LL ret = size;
-    for (auto * child : children)
+    for (auto [name, child] : children)
       ret += child->getTotalSize();
 
     return ret;
   }
   
-  vector<Item *> children;
+  map<string, Item *> children;
   Item * parent { nullptr };
 };
 
@@ -58,14 +58,14 @@ public:
         {
           bool foundAsChild = false;
           if (crtDir)
-            for (auto * child : crtDir->children)
+          {
+            const auto foundChild = (crtDir->children).find(newDirName);
+            if (foundChild != end(crtDir->children))
             {
-              if (child->name == newDirName)
-              {
-                foundAsChild = true;
-                crtDir = child;
-              }
+              foundAsChild = true;
+              crtDir = foundChild->second;
             }
+          }
           
           if (!foundAsChild)
           {
@@ -75,7 +75,7 @@ public:
             newItem->parent = crtDir;
             newItem->isDir = true;
             if (crtDir)
-              crtDir->children.push_back(newItem);
+              crtDir->children[newDirName] = newItem;
             
             crtDir = newItem;
           }
@@ -87,7 +87,7 @@ public:
         auto [sizeStr, itemName] = RegExMatch2(d, R"((\d+) (.+))");
         
         Item * newItem { nullptr };
-        for (auto * child : crtDir->children)
+        for (auto [name, child] : crtDir->children)
         {
           if (child->name == itemName)
           {
@@ -103,7 +103,7 @@ public:
           newItem->name = itemName;
           newItem->parent = crtDir;
           newItem->isDir = false;
-          crtDir->children.push_back(newItem);
+          crtDir->children[itemName] = newItem;
         }
         LL sizeN = stoll(sizeStr);
         newItem->size = sizeN;

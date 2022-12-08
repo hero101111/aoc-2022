@@ -1423,7 +1423,7 @@ template <class T> class DynamicMap
     void fromfile(string filepath, function<T(char)> readFunc = nullptr)
     {
         vector<string> lines = rff(filepath);
-        fromlines(lines);
+        fromlines(lines, readFunc);
     }
 
     void fromfiletokenized(string filepath, char tokenDelimiter)
@@ -1485,18 +1485,15 @@ template <class T> class DynamicMap
         return ret;
     }
 
-    void printf(string filePath, char sep = ' ', char notSet = ' ', bool append = false, string prologue = "")
+    void printf(std::ostream & st, char sep = ' ', char notSet = ' ', bool append = false, string prologue = "")
     {
-        ofstream fOut;
-        fOut.open(filePath, append ? ios_base::app : ios_base::out);
-
         if (append)
         {
-            fOut << endl;
+          st << endl;
         }
         if (!prologue.empty())
         {
-            fOut << prologue << endl;
+          st << prologue << endl;
         }
 
         for (auto j : range_y())
@@ -1509,11 +1506,23 @@ template <class T> class DynamicMap
                     data = notSet;
                 }
 
-                fOut << data << sep;
+              st << data << sep;
             }
-            fOut << endl;
+          st << endl;
         }
-        fOut.close();
+    }
+  
+    void printf(string filePath, char sep = ' ', char notSet = ' ', bool append = false, string prologue = "")
+    {
+      ofstream fOut;
+      fOut.open(filePath, append ? ios_base::app : ios_base::out);
+      printf(fOut, sep, notSet, append, prologue);
+      fOut.close();
+    }
+  
+    void printf(char sep = ' ', char notSet = ' ', bool append = false, string prologue = "")
+    {
+      printf(cout, sep, notSet, append, prologue);
     }
 };
 
