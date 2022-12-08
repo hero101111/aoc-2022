@@ -735,6 +735,8 @@ struct Point
             {
                 ret.emplace_back(x, y1);
             }
+            if (x2 < x1)
+              reverse(begin(ret), end(ret));
         }
         else if (x1 == x2)
         {
@@ -742,6 +744,8 @@ struct Point
             {
                 ret.emplace_back(x1, y);
             }
+            if (y2 < y1)
+              reverse(begin(ret), end(ret));
         }
         else if (!walkInStraightLines && x1 > x2 && y1 > y2)
         {
@@ -774,6 +778,17 @@ struct Point
         return ret;
     }
 };
+
+
+enum class WalkDirection
+{
+  Up = 0,
+  Right,
+  Down,
+  Left
+};
+
+static const WalkDirection WalkDirections[4] = { WalkDirection::Right, WalkDirection::Left, WalkDirection::Down, WalkDirection::Up };
 
 auto operator<<(ostream &out, const Point &c) -> ostream &
 {
@@ -1224,6 +1239,21 @@ template <class T> class DynamicMap
         }
         return ret;
     }
+  
+    auto walkToBorder(Point p, WalkDirection dir, function<bool(Point p)> aPred = nullptr) -> vector<Point>
+    {
+      vector<Point> walk;
+      if (dir == WalkDirection::Up)
+        walk = p.GetTo({p.x, this->min_y}, true);
+      else if (dir == WalkDirection::Down)
+        walk = p.GetTo({p.x, this->max_y}, true);
+      else if (dir == WalkDirection::Left)
+        walk = p.GetTo({this->min_x, p.y}, true);
+      else if (dir == WalkDirection::Right)
+        walk = p.GetTo({this->max_x, p.y}, true);
+      
+      return walk;
+    }
 
     auto operator==(const DynamicMap<T> &other) const -> bool
     {
@@ -1283,6 +1313,11 @@ template <class T> class DynamicMap
     [[nodiscard]] auto height() const -> long long
     {
         return abs(max_y - min_y) + 1;
+    }
+  
+    void clear()
+    {
+      *this = DynamicMap<T>();
     }
 
     auto for_each(function<bool(T)> func) -> size_t
@@ -1386,6 +1421,9 @@ template <class T> class DynamicMap
 
     void fromlines(vector<string> lines, function<T(char)> readFunc = nullptr)
     {
+      if (!empty())
+        clear();
+      
       int crtLine = 0;
       for (auto& line : lines)
       {
@@ -1399,7 +1437,7 @@ template <class T> class DynamicMap
       }
     }
 
-    void addlinetokenized(string line, char tokenDelimiter)
+    void addlinetokenized(string line, char tokenDelimiter, function<T(string)> readFunc = nullptr)
     {
       int crtLine = max_y == numeric_limits<int>::min() ? 0 : max_y + 1;
 
@@ -1408,15 +1446,15 @@ template <class T> class DynamicMap
       for (auto tok : tokens)
       {
         if (!tok.empty())
-          (*this)[{crtChar++, crtLine}] = stoll(tok);
+          (*this)[{crtChar++, crtLine}] = readFunc ? readFunc(tok) : tok;
       }
     }
 
-    void fromlinestokenized(vector<string> lines, char tokenDelimiter)
+    void fromlinestokenized(vector<string> lines, char tokenDelimiter, function<T(string)> readFunc = nullptr)
     {
       for (auto& line : lines)
       {
-        addlinetokenized(line, tokenDelimiter);
+        addlinetokenized(line, tokenDelimiter, readFunc);
       }
     }
 
@@ -1426,10 +1464,10 @@ template <class T> class DynamicMap
         fromlines(lines, readFunc);
     }
 
-    void fromfiletokenized(string filepath, char tokenDelimiter)
+    void fromfiletokenized(string filepath, char tokenDelimiter, function<T(string)> readFunc = nullptr)
     {
       vector<string> lines = rff(filepath);
-      fromlinestokenized(lines, tokenDelimiter);
+      fromlinestokenized(lines, tokenDelimiter, readFunc);
     }
 
     void addline(string line, function<T(char)> readFunc = nullptr)
@@ -1590,9 +1628,15 @@ template <> struct hash<Point>
 
 auto rangeint(long long from, long long to) -> vector<long long>
 {
-    vector<long long> ret(to - from + 1);
-    iota(begin(ret), end(ret), from);
-    return ret;
+  int sizeN = abs(to - from) + 1;
+  vector<long long> ret;
+  
+  ret.reserve(sizeN);
+  //iota(begin(ret), end(ret), from);
+  int dir = to >= from ? 1 : -1;
+  for (int t = 0, v = from; t < sizeN; v+=dir, ++t)
+    ret.push_back(v);
+  return ret;
 }
 
 template <typename V> auto range_vec(V &t, long long from, long long to) -> V
