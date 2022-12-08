@@ -63,14 +63,14 @@ public:
       return ret;
     };
     
-    vector<LL> scenicScores;
+    LL maxScore = -1;
     mMap.for_each([&](Point p, LL v)
     {
-      scenicScores.push_back(getScenicScore(p));
+      maxScore = max(maxScore, getScenicScore(p));
       return true;
     });
     
-    return *max_element(begin(scenicScores), end(scenicScores));
+    return maxScore;
   }
   
   string Part1() override

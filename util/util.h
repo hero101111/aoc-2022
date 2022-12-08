@@ -1639,7 +1639,7 @@ auto rangeint(long long from, long long to) -> vector<long long>
   return ret;
 }
 
-template <typename V> auto range_vec(V &t, long long from, long long to) -> V
+template <typename V> auto rangevec(V &t, long long from, long long to) -> V
 {
     V rt;
     auto r = rangeint(from, to);
@@ -1651,6 +1651,18 @@ template <typename V> auto range_vec(V &t, long long from, long long to) -> V
             break;
     }
     return rt;
+}
+
+template<typename T>
+auto addvec(const vector<T> & a, const vector<T> & b) -> vector<T>
+{
+  vector<T> ret;
+  ret.reserve(a.size() + b.size());
+  for (auto i : a)
+    ret.push_back(i);
+  for (auto i : b)
+    ret.push_back(i);
+  return ret;
 }
 
 template <class T, class F> void for_each(const T &c, F func)
