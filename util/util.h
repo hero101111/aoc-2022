@@ -19,7 +19,10 @@ void pic(string data)
     const char proto_cmd[] = "echo '%s' | pbcopy";
     char cmd[strlen(data.c_str()) + strlen(proto_cmd) - 1]; // -2 to remove the length of %s in proto cmd and + 1 for
                                                             // null terminator = -1
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     sprintf(cmd, proto_cmd, data.c_str());
+#pragma clang diagnostic pop
     system(cmd);
 #endif
 }
