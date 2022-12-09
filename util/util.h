@@ -1628,13 +1628,19 @@ template <> struct hash<Point>
 
 auto rangeint(long long from, long long to) -> vector<long long>
 {
-  int sizeN = abs(to - from) + 1;
+  vector<long long> ret(to - from + 1);
+  iota(begin(ret), end(ret), from);
+  return ret;
+}
+
+auto rangeint2(long long from, long long to) -> vector<long long>
+{
+  LL sizeN = abs(to - from) + 1;
   vector<long long> ret;
   
   ret.reserve(sizeN);
-  //iota(begin(ret), end(ret), from);
   int dir = to >= from ? 1 : -1;
-  for (int t = 0, v = from; t < sizeN; v+=dir, ++t)
+  for (LL t = 0, v = from; t < sizeN; v+=dir, ++t)
     ret.push_back(v);
   return ret;
 }
