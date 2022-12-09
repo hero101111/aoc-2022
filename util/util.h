@@ -100,6 +100,13 @@ auto tok(string str, char sep = ' ') -> vector<string>
     return ret;
 }
 
+template<typename T>
+T getsign(T val)
+{
+  if (val == 0) return 0;
+  return val > 0 ? 1 : -1;
+}
+
 auto split(string str, char sep = ' ') -> pair<string, string>
 {
   auto tokens = tok(str, sep);
@@ -712,6 +719,18 @@ struct Point
     [[nodiscard]] auto ManhattanDist(const Point &p) const -> long long
     {
         return abs(x - p.x) + abs(y - p.y) + abs(z - p.z) + abs(w - p.w);
+    }
+
+    auto ChebyshevDist(const Point& p) const -> long long
+    {      
+      auto onx = abs(x - p.x);
+      auto ony = abs(y - p.y);
+      auto onz = abs(z - p.z);
+      auto onw = abs(w - p.w);
+      auto dist = max(onx, ony);
+      dist = max(dist, onz);
+      dist = max(dist, onw);
+      return dist;
     }
 
     [[nodiscard]] auto DistanceTo(const Point &p) const -> double
