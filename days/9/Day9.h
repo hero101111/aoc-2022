@@ -57,8 +57,8 @@ public:
           if (AreTouching(head, tail))
             continue;
           
-          tail.y += (head.y <=> tail.y)._Value;
-          tail.x += (head.x <=> tail.x)._Value;
+          tail.y += getsign(head.y - tail.y);
+          tail.x += getsign(head.x - tail.x);
         }
       }
     }
