@@ -2,12 +2,7 @@
 
 struct SimpleCPU
 {
-  enum class RegistryType
-  {
-    X = 1,
-  };
-
-  using RegisterMap = unordered_map<RegistryType, LL>;
+  using RegisterMap = unordered_map<LL, LL>;
 
   struct Instruction
   {
@@ -22,7 +17,8 @@ struct SimpleCPU
 
   RegisterMap                       registers{};
   InstructionVector                 instructions{};
-  function<void(SimpleCPU & aThis)> runFunctor{ nullptr };
+  function<void(SimpleCPU & aThis)> runBeforeInstructionFunctor{ nullptr };
+  function<void(SimpleCPU & aThis)> runAfterInstructionFunctor{ nullptr };
   InstructionVector::iterator       currentInstrPtr;
   LL                                currentCycleCount{};
 
@@ -42,9 +38,13 @@ struct SimpleCPU
       currentCycleCount++;
       instCycle++;
 
-      runFunctor(*this);
+      if (runBeforeInstructionFunctor != nullptr)
+        runBeforeInstructionFunctor(*this);
 
       (*currentInstrPtr)->Run(*this, instCycle);
+
+      if (runAfterInstructionFunctor != nullptr)
+        runAfterInstructionFunctor(*this);
 
       if ((*currentInstrPtr)->GetCycleCount(*this) == instCycle)
       {

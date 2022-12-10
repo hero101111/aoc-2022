@@ -2,30 +2,35 @@
 
 #include "SolutionDay.h"
 
-struct NoopInstruction : SimpleCPU::Instruction
-{
-  NoopInstruction() {}
-
-  int GetCycleCount(SimpleCPU &) override { return 1; }
-
-  void Run(SimpleCPU &, LL) override{ /* do nothing */ };
-};
-
-struct AddXInstruction : SimpleCPU::Instruction
-{
-  AddXInstruction(LL aPayload) { this->payload = aPayload; }
-
-  int GetCycleCount(SimpleCPU &) override { return 2; }
-
-  void Run(SimpleCPU & aCpu, LL aCrtInstCycle) override
-  {
-    if (aCrtInstCycle == 2)
-      aCpu.registers[SimpleCPU::RegistryType::X] += payload;
-  };
-};
-
 struct Day10CPU : public SimpleCPU
 {
+  enum RegistryType
+  {
+    X = 1,
+  };
+
+  struct NoopInstruction : SimpleCPU::Instruction
+  {
+    NoopInstruction() {}
+
+    int GetCycleCount(SimpleCPU &) override { return 1; }
+
+    void Run(SimpleCPU &, LL) override{ /* do nothing */ };
+  };
+
+  struct AddXInstruction : SimpleCPU::Instruction
+  {
+    AddXInstruction(LL aPayload) { this->payload = aPayload; }
+
+    int GetCycleCount(SimpleCPU &) override { return 2; }
+
+    void Run(SimpleCPU & aCpu, LL aCrtInstCycle) override
+    {
+      if (aCrtInstCycle == 2)
+        aCpu.registers[RegistryType::X] += payload;
+    };
+  };
+
   void ReadInstructions(vector<string> aLines)
   {
     for (auto d : aLines)
@@ -44,7 +49,7 @@ struct Day10CPU : public SimpleCPU
 
   Day10CPU(string inputFile)
   {
-    registers[SimpleCPU::RegistryType::X] = 1;
+    registers[RegistryType::X] = 1;
     ReadInstructions(rff(inputFile));
   }
 };
@@ -65,10 +70,10 @@ public:
     LL ret = 0;
 
     Day10CPU cpu(GetInputPath());
-    cpu.runFunctor = [&](SimpleCPU & aCpu)
+    cpu.runBeforeInstructionFunctor = [&](SimpleCPU & aCpu)
     {
       if (contains(vector{ 20, 60, 100, 140, 180, 220 }, aCpu.currentCycleCount))
-        ret += aCpu.currentCycleCount * aCpu.registers[SimpleCPU::RegistryType::X];
+        ret += aCpu.currentCycleCount * aCpu.registers[Day10CPU::RegistryType::X];
     };
     cpu.Run(begin(cpu.instructions));
 
@@ -82,9 +87,9 @@ public:
     ostringstream outS;
 
     Day10CPU cpu(GetInputPath());
-    cpu.runFunctor = [&](SimpleCPU & aCpu)
+    cpu.runBeforeInstructionFunctor = [&](SimpleCPU & aCpu)
     {
-      const bool isLit = abs(crtCol - aCpu.registers[SimpleCPU::RegistryType::X]) <= 1;
+      const bool isLit = abs(crtCol - aCpu.registers[Day10CPU::RegistryType::X]) <= 1;
       if (isLit)
         outS << "#";
       else
