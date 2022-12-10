@@ -5,39 +5,43 @@
 class Day8 : public ISolutionDay
 {
 private:
-
   DynamicMap<LL> mMap;
-  
+
 public:
+  Day8() {}
 
-  Day8(){ }
-
-  ~Day8() override { }
+  ~Day8() override {}
 
   void ReadData()
   {
-    mMap.fromfile(GetInputPath(), [](char c)->LL{ return c - '0'; });
+    mMap.fromfile(GetInputPath(),
+                  [](char c) -> LL
+                  {
+                    return c - '0';
+                  });
   }
-  
-  string GetDay() override
-  {
-    return "8";
-  }
-  
+
+  string GetDay() override { return "8"; }
+
   LL DoWork1()
   {
-    return mMap.for_each([&](Point p, LL)
-    {
-      for (auto dir : WalkDirections)
+    return mMap.for_each(
+      [&](Point p, LL)
       {
-        vector<Point> walk = mMap.walkToBorder(p, dir);
-        walk.erase(begin(walk));
-        
-        if (end(walk) == find_if(begin(walk), end(walk), [&](Point w){ return mMap[w] >= mMap[p]; }))
-          return true;
-      }
-      return false;
-    });
+        for (auto dir : WalkDirections)
+        {
+          vector<Point> walk = mMap.walkToBorder(p, dir);
+          walk.erase(begin(walk));
+
+          if (end(walk) == find_if(begin(walk), end(walk),
+                                   [&](Point w)
+                                   {
+                                     return mMap[w] >= mMap[p];
+                                   }))
+            return true;
+        }
+        return false;
+      });
   }
 
   LL DoWork2()
@@ -45,7 +49,7 @@ public:
     auto getScenicScore = [&](Point p)
     {
       LL ret = 1;
-      
+
       for (auto dir : WalkDirections)
       {
         vector<Point> walk = mMap.walkToBorder(p, dir);
@@ -59,20 +63,21 @@ public:
         }
         ret *= factor;
       }
-      
+
       return ret;
     };
-    
+
     LL maxScore = -1;
-    mMap.for_each([&](Point p, LL v)
-    {
-      maxScore = max(maxScore, getScenicScore(p));
-      return true;
-    });
-    
+    mMap.for_each(
+      [&](Point p, LL v)
+      {
+        maxScore = max(maxScore, getScenicScore(p));
+        return true;
+      });
+
     return maxScore;
   }
-  
+
   string Part1() override
   {
     ReadData();

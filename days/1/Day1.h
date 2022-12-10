@@ -5,39 +5,39 @@
 class Day1 : public ISolutionDay
 {
 private:
-
   vector<LL> mElfs;
 
 public:
+  Day1() {}
 
-  Day1(){ }
-
-  ~Day1() override { }
+  ~Day1() override {}
 
   void ReadData()
   {
     mElfs.clear();
     auto data = rffv(GetInputPath());
     for (auto elf : data)
-      mElfs.push_back(reduce(begin(elf), end(elf), 0ll, [](LL a, string b){ return stoll(b) + a; }));
-  }
-  
-  string GetDay() override
-  {
-    return "1";
+      mElfs.push_back(reduce(begin(elf), end(elf), 0ll,
+                             [](LL a, string b)
+                             {
+                               return stoll(b) + a;
+                             }));
   }
 
-  LL DoWork1()
-  {
-    return *max_element(begin(mElfs), end(mElfs));
-  }
+  string GetDay() override { return "1"; }
+
+  LL DoWork1() { return *max_element(begin(mElfs), end(mElfs)); }
 
   LL DoWork2()
   {
     nth_element(begin(mElfs), begin(mElfs) + 2, end(mElfs), greater<LL>());
-    return reduce(begin(mElfs), begin(mElfs) + 3, 0ll, [](LL a, LL b){ return a + b;});
+    return reduce(begin(mElfs), begin(mElfs) + 3, 0ll,
+                  [](LL a, LL b)
+                  {
+                    return a + b;
+                  });
   }
-  
+
   string Part1() override
   {
     ReadData();

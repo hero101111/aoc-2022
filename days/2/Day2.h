@@ -5,25 +5,20 @@
 class Day2 : public ISolutionDay
 {
 private:
-
   vector<string> mData;
 
 public:
+  Day2() {}
 
-  Day2(){ }
-
-  ~Day2() override { }
+  ~Day2() override {}
 
   void ReadData()
   {
     mData.clear();
     mData = rff(GetInputPath());
   }
-  
-  string GetDay() override
-  {
-    return "2";
-  }
+
+  string GetDay() override { return "2"; }
 
   LL DoWork1()
   {
@@ -34,7 +29,7 @@ public:
       int theirs = d[0] - 'A';
 
       bool isWin = mine == (theirs + 1) % 3;
-      
+
       ret += (mine + 1) + (isWin ? 6 : (mine == theirs ? 3 : 0));
     }
     return ret;
@@ -50,21 +45,22 @@ public:
 
       bool isWin  = strategy == 2;
       bool isLose = strategy == 0;
-      
+
       int mine = theirs;
       if (isWin)
         mine = (theirs + 1) % 3;
       else if (isLose)
       {
         mine = theirs - 1;
-        if (mine == -1) mine = 2;
+        if (mine == -1)
+          mine = 2;
       }
-      
+
       ret += (mine + 1) + (isWin ? 6 : (mine == theirs ? 3 : 0));
     }
     return ret;
   }
-  
+
   string Part1() override
   {
     ReadData();

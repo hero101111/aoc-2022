@@ -5,25 +5,20 @@
 class Day4 : public ISolutionDay
 {
 private:
-
   vector<string> mData;
 
 public:
+  Day4() {}
 
-  Day4(){ }
-
-  ~Day4() override { }
+  ~Day4() override {}
 
   void ReadData()
   {
     mData.clear();
     mData = rff(GetInputPath());
   }
-  
-  string GetDay() override
-  {
-    return "4";
-  }
+
+  string GetDay() override { return "4"; }
 
   auto Retrieve(string input)
   {
@@ -33,7 +28,7 @@ public:
   LL DoWork1()
   {
     LL ret = 0;
-    
+
     for (auto d : mData)
     {
       auto [a1, a2, b1, b2] = Retrieve(d);
@@ -56,11 +51,10 @@ public:
         ret++;
       else if (a1 >= b1 && a1 <= b2)
         ret++;
-
     }
     return ret;
   }
-  
+
   string Part1() override
   {
     ReadData();

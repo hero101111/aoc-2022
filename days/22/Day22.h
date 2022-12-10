@@ -5,25 +5,20 @@
 class Day22 : public ISolutionDay
 {
 private:
-
   vector<string> mData;
 
 public:
+  Day22() {}
 
-  Day22(){ }
-
-  ~Day22() override { }
+  ~Day22() override {}
 
   void ReadData()
   {
     mData.clear();
     mData = rff(GetInputPath());
   }
-  
-  string GetDay() override
-  {
-    return "22";
-  }
+
+  string GetDay() override { return "22"; }
 
   LL DoWork1()
   {
@@ -36,7 +31,7 @@ public:
     LL ret = 222;
     return ret;
   }
-  
+
   string Part1() override
   {
     ReadData();
@@ -54,8 +49,8 @@ public:
   bool Test() override
   {
     mCurrentInput = "test";
-    //assert(Part1() != "");
-    //assert(Part2() != "");
+    // assert(Part1() != "");
+    // assert(Part2() != "");
     return true;
   }
 };

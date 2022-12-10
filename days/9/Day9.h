@@ -5,69 +5,61 @@
 class Day9 : public ISolutionDay
 {
 private:
-
   vector<string> mData;
 
 public:
+  Day9() {}
 
-  Day9(){ }
-
-  ~Day9() override { }
+  ~Day9() override {}
 
   void ReadData()
   {
     mData.clear();
     mData = rff(GetInputPath());
   }
-  
-  string GetDay() override
-  {
-    return "9";
-  }
-  
-  bool AreTouching(Point head, Point tail)
-  {
-    return head.ChebyshevDist(tail) <= 1;
-  }
+
+  string GetDay() override { return "9"; }
+
+  bool AreTouching(Point head, Point tail) { return head.ChebyshevDist(tail) <= 1; }
 
   LL DoWork(int n)
   {
-    set<Point> vis;
+    set<Point>    vis;
     vector<Point> knots(n);
-    
+
     for (auto d : mData)
     {
       vis.insert(knots.back());
-      
+
       auto [dir, lenStr] = RegExMatch2(d, R"((\w) (\d+))");
-      LL len = stoll(lenStr);
-      
+      LL len             = stoll(lenStr);
+
       while (len-- > 0)
       {
         vis.insert(knots.back());
-        
+
         auto & head = knots[0];
-        head = head.FromDirection(dir[0]);
-        
+        head        = head.FromDirection(dir[0]);
+
         for (auto it : rangeint(1, knots.size() - 1))
         {
-          auto head = knots[it - 1];
+          auto   head = knots[it - 1];
           auto & tail = knots[it];
-          
+
           if (AreTouching(head, tail))
             continue;
-          
+
           tail.y += getsign(head.y - tail.y);
           tail.x += getsign(head.x - tail.x);
         }
       }
     }
-    
+
     vis.insert(knots.back());
     LL ret = vis.size();
     return ret;
   }
-  
+
   string Part1() override
   {
     ReadData();
