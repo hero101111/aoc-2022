@@ -122,5 +122,8 @@
     <ClInclude Include="days\1\Day1.h">
       <Filter>Header Files\Week1</Filter>
     </ClInclude>
+    <ClInclude Include="util\SimpleCPU.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
