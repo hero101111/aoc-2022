@@ -1,6 +1,9 @@
 #pragma once
 
+// clang-format off
 #include "util/util.h"
+#include "util/SimpleCPU.h"
+// clang-format on
 
 class ISolutionDay
 {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../util/SimpleCPU.h"
 #include "SolutionDay.h"
 
 class Day10 : public ISolutionDay
