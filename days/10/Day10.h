@@ -2,6 +2,53 @@
 
 #include "SolutionDay.h"
 
+struct NoopInstruction : SimpleCPU::Instruction
+{
+  NoopInstruction() {}
+
+  int GetCycleCount(SimpleCPU &) override { return 1; }
+
+  void Run(SimpleCPU &, LL) override{ /* do nothing */ };
+};
+
+struct AddXInstruction : SimpleCPU::Instruction
+{
+  AddXInstruction(LL aPayload) { this->payload = aPayload; }
+
+  int GetCycleCount(SimpleCPU &) override { return 2; }
+
+  void Run(SimpleCPU & aCpu, LL aCrtInstCycle) override
+  {
+    if (aCrtInstCycle == 2)
+      aCpu.registers[SimpleCPU::RegistryType::X] += payload;
+  };
+};
+
+struct Day10CPU : public SimpleCPU
+{
+  void ReadInstructions(vector<string> aLines)
+  {
+    for (auto d : aLines)
+    {
+      auto   tokens    = tok(d, ' ');
+      string instrName = tokens[0];
+
+      if (instrName == "noop")
+        instructions.push_back(make_shared<NoopInstruction>());
+      else if (instrName == "addx")
+        instructions.push_back(make_shared<AddXInstruction>(stoll(tokens[1])));
+      else
+        assert(!"unsupported instruction");
+    }
+  }
+
+  Day10CPU(string inputFile)
+  {
+    registers[SimpleCPU::RegistryType::X] = 1;
+    ReadInstructions(rff(inputFile));
+  }
+};
+
 class Day10 : public ISolutionDay
 {
 public:
@@ -13,22 +60,11 @@ public:
 
   string GetDay() override { return "10"; }
 
-  auto GetCPU()
-  {
-    SimpleCPU::RegisterMap registers;
-    registers[SimpleCPU::RegistryType::X] = 1;
-
-    SimpleCPU cpu(registers);
-    cpu.ReadInstructions(rff(GetInputPath()), false);
-
-    return cpu;
-  }
-
   LL DoWork1()
   {
     LL ret = 0;
 
-    auto cpu       = GetCPU();
+    Day10CPU cpu(GetInputPath());
     cpu.runFunctor = [&](SimpleCPU & aCpu)
     {
       if (contains(vector{ 20, 60, 100, 140, 180, 220 }, aCpu.currentCycleCount))
@@ -45,7 +81,7 @@ public:
     int           crtCol  = 0;
     ostringstream outS;
 
-    auto cpu       = GetCPU();
+    Day10CPU cpu(GetInputPath());
     cpu.runFunctor = [&](SimpleCPU & aCpu)
     {
       const bool isLit = abs(crtCol - aCpu.registers[SimpleCPU::RegistryType::X]) <= 1;
