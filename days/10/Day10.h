@@ -31,8 +31,8 @@ public:
     auto cpu       = GetCPU();
     cpu.runFunctor = [&](SimpleCPU & aCpu)
     {
-      if (contains(vector{ 20, 60, 100, 140, 180, 220 }, aCpu.currentCycles))
-        ret += aCpu.currentCycles * aCpu.registers[SimpleCPU::RegistryType::X];
+      if (contains(vector{ 20, 60, 100, 140, 180, 220 }, aCpu.currentCycleCount))
+        ret += aCpu.currentCycleCount * aCpu.registers[SimpleCPU::RegistryType::X];
     };
     cpu.Run(begin(cpu.instructions));
 

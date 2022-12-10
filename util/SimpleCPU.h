@@ -49,12 +49,12 @@ struct SimpleCPU
   RegisterMap                       registers{};
   InstructionVector                 instructions{};
   function<void(SimpleCPU & aThis)> runFunctor{ nullptr };
-  InstructionVector::iterator       instructionPointer;
-  LL                                currentCycles{};
+  InstructionVector::iterator       currentInstrPtr;
+  LL                                currentCycleCount{};
 
   static bool DefaultStoppingFunctor(SimpleCPU & aCpu)
   {
-    return aCpu.instructionPointer == end(aCpu.instructions);
+    return aCpu.currentInstrPtr == end(aCpu.instructions);
   };
 
   SimpleCPU(unordered_map<RegistryType, LL> aRegisters)
@@ -86,28 +86,28 @@ struct SimpleCPU
   void Run(InstructionVector::iterator instrPtr,
            function<bool(SimpleCPU &)> stopFunctor = DefaultStoppingFunctor)
   {
-    LL instCycle       = 0;
-    instructionPointer = instrPtr;
+    LL instCycle    = 0;
+    currentInstrPtr = instrPtr;
 
     while (true)
     {
-      currentCycles++;
+      currentCycleCount++;
       instCycle++;
 
       runFunctor(*this);
 
-      (*instructionPointer)->Run(*this, instCycle);
+      (*currentInstrPtr)->Run(*this, instCycle);
 
-      if ((*instructionPointer)->GetCycleCount(*this) == instCycle)
+      if ((*currentInstrPtr)->GetCycleCount(*this) == instCycle)
       {
-        instructionPointer++;
+        currentInstrPtr++;
         instCycle = 0;
 
         if (stopFunctor != nullptr && stopFunctor(*this))
           break;
 
-        if (instructionPointer == end(instructions))
-          instructionPointer = begin(instructions);
+        if (currentInstrPtr == end(instructions))
+          currentInstrPtr = begin(instructions);
       }
     }
   }
