@@ -1,0 +1,59 @@
+# https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Coding_Style
+---
+BasedOnStyle: Mozilla
+ColumnLimit:  '100'
+#IndentWidth: '2'
+#UseTab:      Never
+
+### namespaces, templates, classes and functions
+AllowAllParametersOfDeclarationOnNextLine: 'true'
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortLambdasOnASingleLine: Empty
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+BinPackArguments: 'true'
+BinPackParameters: 'false'
+
+### blocks of code
+BreakBeforeBraces: Allman
+IndentCaseLabels: 'false'
+
+### comments, spaces and indentation
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveDeclarations: Consecutive
+AlignConsecutiveMacros: Consecutive
+AlignEscapedNewlines: Left
+FixNamespaceComments: 'true'
+KeepEmptyLinesAtTheStartOfBlocks: 'false'
+SpaceAfterTemplateKeyword: 'true'
+SpacesBeforeTrailingComments: '2'
+
+---
+Language: Cpp
+### alignment of & and *
+PointerAlignment: Middle
+
+IncludeBlocks: Merge
+IncludeCategories:
+  - Regex:           '^"stdafx\.h"'
+    Priority:        -2
+    CaseSensitive:   false
+  - Regex:           '^"resource\.h"'
+    Priority:        -1
+    CaseSensitive:   false
+  # main header for a source file automatically gets category 0
+
+  # headers on the same directory with main header
+  - Regex:           '^"[^0-9][^/]*'
+    Priority:        3
+    CaseSensitive:   false
+  # headers with absolute path
+  - Regex:           '^"[^0-9].*/'
+    Priority:        6
+    CaseSensitive:   false
+  # third party headers (ex. 7z)
+  - Regex:           '^"[0-9].*/'
+    Priority:        9
+    CaseSensitive:   false
+
+...
