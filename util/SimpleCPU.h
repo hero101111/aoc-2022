@@ -20,6 +20,8 @@ struct SimpleCPU
 
   using InstructionVector = vector<shared_ptr<Instruction>>;
 
+  //---------------------------------------------------------------------------
+
   struct NoopInstruction : Instruction
   {
     NoopInstruction() {}
@@ -41,6 +43,8 @@ struct SimpleCPU
         aCpu.registers[RegistryType::X] += payload;
     };
   };
+
+  //---------------------------------------------------------------------------
 
   RegisterMap                       registers{};
   InstructionVector                 instructions{};
