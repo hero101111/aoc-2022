@@ -14,15 +14,22 @@ public:
 
   string GetDay() override { return "10"; }
 
-  LL DoWork1()
+  auto GetCPU()
   {
-    LL ret = 0;
-
     unordered_map<SimpleCPU::RegistryType, LL> registers;
     registers[SimpleCPU::RegistryType::X] = 1;
 
     SimpleCPU cpu(registers);
     cpu.ReadInstructions(rff(GetInputPath()), false);
+
+    return cpu;
+  }
+
+  LL DoWork1()
+  {
+    LL ret = 0;
+
+    auto cpu       = GetCPU();
     cpu.runFunctor = [&](SimpleCPU & aThis)
     {
       if (contains(vector{ 20, 60, 100, 140, 180, 220 }, aThis.currentCycles))
@@ -35,15 +42,11 @@ public:
 
   string DoWork2()
   {
-    int line = 0;
-    int col  = 0;
-
-    unordered_map<SimpleCPU::RegistryType, LL> registers;
-    registers[SimpleCPU::RegistryType::X] = 1;
-
+    int           line = 0;
+    int           col  = 0;
     ostringstream outS;
-    SimpleCPU     cpu(registers);
-    cpu.ReadInstructions(rff(GetInputPath()), false);
+
+    auto cpu       = GetCPU();
     cpu.runFunctor = [&](SimpleCPU & aThis)
     {
       bool lit = false;
