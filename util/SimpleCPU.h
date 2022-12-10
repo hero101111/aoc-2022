@@ -38,10 +38,11 @@ struct SimpleCPU
     };
   };
 
-  unordered_map<RegistryType, LL>              registers;
-  vector<shared_ptr<Instruction>>              instructions;
-  function<void(SimpleCPU & aThis, LL aCycle)> runFunctor{ nullptr };
-  vector<shared_ptr<Instruction>>::iterator    instructionPointer;
+  unordered_map<RegistryType, LL>           registers{};
+  vector<shared_ptr<Instruction>>           instructions{};
+  function<void(SimpleCPU & aThis)>         runFunctor{ nullptr };
+  vector<shared_ptr<Instruction>>::iterator instructionPointer;
+  LL                                        currentCycles{};
 
   static bool DefaultStoppingFunctor(SimpleCPU & aCpu)
   {
@@ -53,10 +54,13 @@ struct SimpleCPU
   {
   }
 
+  void Reset() { instructions.clear(); }
+
   void ReadInstructions(vector<string> aLines, bool aClearExisting)
   {
     if (aClearExisting)
-      instructions.clear();
+      Reset();
+
     for (auto d : aLines)
     {
       auto   tokens    = tok(d, ' ');
@@ -74,16 +78,15 @@ struct SimpleCPU
   void Run(vector<shared_ptr<Instruction>>::iterator instrPtr,
            function<bool(SimpleCPU &)>               stopFunctor = DefaultStoppingFunctor)
   {
-    LL crtCycle        = 0;
     LL instCycle       = 0;
     instructionPointer = instrPtr;
 
     while (true)
     {
-      crtCycle++;
+      currentCycles++;
       instCycle++;
 
-      runFunctor(*this, crtCycle);
+      runFunctor(*this);
 
       (*instructionPointer)->Run(*this, instCycle);
 

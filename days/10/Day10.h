@@ -23,10 +23,10 @@ public:
 
     SimpleCPU cpu(registers);
     cpu.ReadInstructions(rff(GetInputPath()), false);
-    cpu.runFunctor = [&](SimpleCPU & aThis, LL aCycle)
+    cpu.runFunctor = [&](SimpleCPU & aThis)
     {
-      if (contains(vector{ 20, 60, 100, 140, 180, 220 }, aCycle))
-        ret += aCycle * aThis.registers[SimpleCPU::RegistryType::X];
+      if (contains(vector{ 20, 60, 100, 140, 180, 220 }, aThis.currentCycles))
+        ret += aThis.currentCycles * aThis.registers[SimpleCPU::RegistryType::X];
     };
     cpu.Run(begin(cpu.instructions));
 
@@ -44,7 +44,7 @@ public:
     ostringstream outS;
     SimpleCPU     cpu(registers);
     cpu.ReadInstructions(rff(GetInputPath()), false);
-    cpu.runFunctor = [&](SimpleCPU & aThis, LL aCycle)
+    cpu.runFunctor = [&](SimpleCPU & aThis)
     {
       bool lit = false;
 
