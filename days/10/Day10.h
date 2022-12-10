@@ -41,27 +41,24 @@ public:
 
   string DoWork2()
   {
-    int           line = 0;
-    int           col  = 0;
+    int           crtLine = 0;
+    int           crtCol  = 0;
     ostringstream outS;
 
     auto cpu       = GetCPU();
     cpu.runFunctor = [&](SimpleCPU & aCpu)
     {
-      bool lit = false;
-
-      auto xReg = aCpu.registers[SimpleCPU::RegistryType::X];
-      lit       = abs(col - xReg) <= 1;
-      if (lit)
+      const bool isLit = abs(crtCol - aCpu.registers[SimpleCPU::RegistryType::X]) <= 1;
+      if (isLit)
         outS << "#";
       else
         outS << ".";
 
-      col += 1;
-      if (col == 40)
+      crtCol += 1;
+      if (crtCol == 40)
       {
-        line += 1;
-        col = 0;
+        crtLine += 1;
+        crtCol = 0;
         outS << endl;
       }
     };
