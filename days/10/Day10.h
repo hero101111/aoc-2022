@@ -30,10 +30,10 @@ public:
     LL ret = 0;
 
     auto cpu       = GetCPU();
-    cpu.runFunctor = [&](SimpleCPU & aThis)
+    cpu.runFunctor = [&](SimpleCPU & aCpu)
     {
-      if (contains(vector{ 20, 60, 100, 140, 180, 220 }, aThis.currentCycles))
-        ret += aThis.currentCycles * aThis.registers[SimpleCPU::RegistryType::X];
+      if (contains(vector{ 20, 60, 100, 140, 180, 220 }, aCpu.currentCycles))
+        ret += aCpu.currentCycles * aCpu.registers[SimpleCPU::RegistryType::X];
     };
     cpu.Run(begin(cpu.instructions));
 
@@ -47,11 +47,11 @@ public:
     ostringstream outS;
 
     auto cpu       = GetCPU();
-    cpu.runFunctor = [&](SimpleCPU & aThis)
+    cpu.runFunctor = [&](SimpleCPU & aCpu)
     {
       bool lit = false;
 
-      auto xReg = aThis.registers[SimpleCPU::RegistryType::X];
+      auto xReg = aCpu.registers[SimpleCPU::RegistryType::X];
       lit       = abs(col - xReg) <= 1;
       if (lit)
         outS << "#";
