@@ -7,6 +7,8 @@ struct SimpleCPU
     X = 1,
   };
 
+  using RegisterMap = unordered_map<RegistryType, LL>;
+
   struct Instruction
   {
     string name;
@@ -15,6 +17,8 @@ struct SimpleCPU
     virtual void Run(SimpleCPU & aCpu, LL aCrtInstCycle) = 0;
     virtual int  GetCycleCount(SimpleCPU & aCpu)         = 0;
   };
+
+  using InstructionVector = vector<shared_ptr<Instruction>>;
 
   struct NoopInstruction : Instruction
   {
@@ -38,11 +42,11 @@ struct SimpleCPU
     };
   };
 
-  unordered_map<RegistryType, LL>           registers{};
-  vector<shared_ptr<Instruction>>           instructions{};
-  function<void(SimpleCPU & aThis)>         runFunctor{ nullptr };
-  vector<shared_ptr<Instruction>>::iterator instructionPointer;
-  LL                                        currentCycles{};
+  RegisterMap                       registers{};
+  InstructionVector                 instructions{};
+  function<void(SimpleCPU & aThis)> runFunctor{ nullptr };
+  InstructionVector::iterator       instructionPointer;
+  LL                                currentCycles{};
 
   static bool DefaultStoppingFunctor(SimpleCPU & aCpu)
   {
@@ -75,8 +79,8 @@ struct SimpleCPU
     }
   }
 
-  void Run(vector<shared_ptr<Instruction>>::iterator instrPtr,
-           function<bool(SimpleCPU &)>               stopFunctor = DefaultStoppingFunctor)
+  void Run(InstructionVector::iterator instrPtr,
+           function<bool(SimpleCPU &)> stopFunctor = DefaultStoppingFunctor)
   {
     LL instCycle       = 0;
     instructionPointer = instrPtr;

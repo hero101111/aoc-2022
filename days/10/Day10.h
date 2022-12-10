@@ -16,7 +16,7 @@ public:
 
   auto GetCPU()
   {
-    unordered_map<SimpleCPU::RegistryType, LL> registers;
+    SimpleCPU::RegisterMap registers;
     registers[SimpleCPU::RegistryType::X] = 1;
 
     SimpleCPU cpu(registers);
