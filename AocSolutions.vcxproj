@@ -141,6 +141,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BigInt.h" />
     <ClInclude Include="days\10\Day10.h" />
     <ClInclude Include="days\11\Day11.h" />
     <ClInclude Include="days\12\Day12.h" />

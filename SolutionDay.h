@@ -3,6 +3,7 @@
 // clang-format off
 #include "util/util.h"
 #include "util/SimpleCPU.h"
+#include "BigInt.h"
 // clang-format on
 
 class ISolutionDay

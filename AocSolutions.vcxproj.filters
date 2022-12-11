@@ -125,5 +125,8 @@
     <ClInclude Include="util\SimpleCPU.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="BigInt.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

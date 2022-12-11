@@ -1,6 +1,7 @@
 #pragma once
 
-using LL = long long;
+using LL  = long long;
+using ULL = unsigned long long;
 
 void pic(string data)
 {
@@ -2101,6 +2102,29 @@ public:
     return ret;
   }
 };
+
+unordered_set<LL> getPrimeFactors(LL n)
+{
+  unordered_set<LL> ret;
+  while (n % 2 == 0)
+  {
+    ret.insert(2);
+    n = n / 2;
+  }
+
+  for (LL i = 3; i <= sqrt(n); i = i + 2)
+  {
+    while (n % i == 0)
+    {
+      ret.insert(i);
+      n = n / i;
+    }
+  }
+
+  if (n > 2)
+    ret.insert(n);
+  return ret;
+}
 
 auto gcd(long long a, long long b) -> long long
 {
