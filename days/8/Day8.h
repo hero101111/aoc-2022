@@ -93,11 +93,11 @@ public:
   bool Test() override
   {
     mCurrentInput = "test";
-    assert(Part1() == "21");
-    assert(Part2() == "8");
+    aoc_assert(Part1(), "21"s);
+    aoc_assert(Part2(), "8"s);
     mCurrentInput = "input";
-    assert(Part1() == "1690");
-    assert(Part2() == "535680");
+    aoc_assert(Part1(), "1690"s);
+    aoc_assert(Part2(), "535680"s);
     return true;
   }
 };

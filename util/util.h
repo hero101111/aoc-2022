@@ -3,6 +3,29 @@
 using LL  = long long;
 using ULL = unsigned long long;
 
+template <typename T>
+bool _aoc_assert(T value, T expectedValue, string descr = "")
+{
+  if (expectedValue != value)
+  {
+    cout << "ASSERT_FAIL " << descr << " should be " << expectedValue << ", got " << value << endl;
+    return false;
+  }
+  return true;
+}
+
+#define aoc_assert(value, expectedValue, descr)          \
+  {                                                      \
+    if (!_aoc_assert(value, expectedValue, descr))       \
+      cout << " " __FILE__ << " : " << __LINE__ << endl; \
+  }
+
+#define aoc_assert(value, expectedValue)                     \
+  {                                                          \
+    if (!_aoc_assert(value, expectedValue, ""s))             \
+      cout << "  " << __FILE__ << " : " << __LINE__ << endl; \
+  }
+
 void pic(string data)
 {
 #ifdef _MSC_VER

@@ -85,8 +85,8 @@ public:
   bool Test() override
   {
     mCurrentInput = "input";
-    assert(Part1() == "462");
-    assert(Part2() == "451");
+    aoc_assert(Part1(), "462"s, "Day 12 Part1"s);
+    aoc_assert(Part2(), "451"s, "Day 12 Part2"s);
     return true;
   }
 };

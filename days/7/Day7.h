@@ -174,12 +174,12 @@ public:
   bool Test() override
   {
     mCurrentInput = "test";
-    assert(Part1() == "95437");
-    assert(Part2() == "24933642");
+    aoc_assert(Part1(), "95437"s);
+    aoc_assert(Part2(), "24933642"s);
 
     mCurrentInput = "input";
-    assert(Part1() == "1989474");
-    assert(Part2() == "1111607");
+    aoc_assert(Part1(), "1989474"s);
+    aoc_assert(Part2(), "1111607"s);
     return true;
   }
 };

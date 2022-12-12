@@ -49,8 +49,8 @@ public:
   bool Test() override
   {
     mCurrentInput = "test";
-    // assert(Part1() != "");
-    // assert(Part2() != "");
+    // aoc_assert(Part1() != "");
+    // aoc_assert(Part2() != "");
     return true;
   }
 };

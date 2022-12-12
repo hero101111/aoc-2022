@@ -125,10 +125,10 @@ public:
   bool Test() override
   {
     mCurrentInput = "test";
-    assert(Part1() == "13140");
+    aoc_assert(Part1(), "13140"s);
 
     mCurrentInput = "input";
-    assert(Part1() == "17940");
+    aoc_assert(Part1(), "17940"s);
 
     string testVal = R"(####..##..###...##....##.####...##.####.
 ...#.#..#.#..#.#..#....#.#.......#....#.
@@ -137,7 +137,7 @@ public:
 #....#..#.#..#.#..#.#..#.#....#..#.#....
 ####..##..###..#..#..##..#.....##..####.
 )";
-    assert(Part2() == testVal);
+    aoc_assert(Part2(), testVal);
     return true;
   }
 };

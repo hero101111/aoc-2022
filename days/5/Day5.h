@@ -90,8 +90,8 @@ public:
   bool Test() override
   {
     mCurrentInput = "input";
-    assert(Part1() == "PTWLTDSJV");
-    assert(Part2() == "WZMFVGGZP");
+    aoc_assert(Part1(), "PTWLTDSJV"s);
+    aoc_assert(Part2(), "WZMFVGGZP"s);
     return true;
   }
 };

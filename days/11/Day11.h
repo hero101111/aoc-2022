@@ -147,8 +147,8 @@ public:
   bool Test() override
   {
     mCurrentInput = "input";
-    assert(Part1() == "110264");
-    assert(Part2() == "23612457316");
+    aoc_assert(Part1(), "110264"s);
+    aoc_assert(Part2(), "23612457316"s);
     return true;
   }
 };

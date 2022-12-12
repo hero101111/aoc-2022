@@ -55,12 +55,12 @@ public:
   bool Test() override
   {
     mCurrentInput = "test";
-    assert(Part1() == "11");
-    assert(Part2() == "26");
+    aoc_assert(Part1(), "11"s);
+    aoc_assert(Part2(), "26"s);
 
     mCurrentInput = "input";
-    assert(Part1() == "1480");
-    assert(Part2() == "2746");
+    aoc_assert(Part1(), "1480"s);
+    aoc_assert(Part2(), "2746"s);
     return true;
   }
 };
