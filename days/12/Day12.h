@@ -5,31 +5,34 @@
 class Day12 : public ISolutionDay
 {
 public:
-  Day12() {}
+  DynamicMap<char> map;
+  Graph<Point>     graph;
+  Point            origin, destination;
+
+  Day12()
+    : graph(Graph<Point>(150 * 50))
+  {
+  }
 
   ~Day12() override {}
 
   string GetDay() override { return "12"; }
 
-  LL DoWork(bool firstPart)
+  char getNodeName(char nodeNameUntouched)
   {
-    DynamicMap<char> map;
+    char nodeName = nodeNameUntouched;
+    if (nodeName == 'S')
+      nodeName = 'a';
+    if (nodeName == 'E')
+      nodeName = 'z';
+
+    nodeName = 'z' - nodeName + 'a';
+    return nodeName;
+  }
+
+  void ReadData()
+  {
     map.fromfile(GetInputPath());
-    int          n = (map.max_x + 20) * map.max_y;
-    Graph<Point> graph(n);
-
-    Point origin, destination;
-    auto  getNodeName = [](char nodeNameUntouched)
-    {
-      char nodeName = nodeNameUntouched;
-      if (nodeName == 'S')
-        nodeName = 'a';
-      if (nodeName == 'E')
-        nodeName = 'z';
-
-      nodeName = 'z' - nodeName + 'a';
-      return nodeName;
-    };
     map.for_each(
       [&](Point node, char nodeNameUntouched)
       {
@@ -54,6 +57,11 @@ public:
         }
         return true;
       });
+  }
+
+  LL DoWork(bool firstPart)
+  {
+    ReadData();
 
     auto dist = graph.GetDistances(destination);
 
@@ -74,8 +82,6 @@ public:
         });
       return minRet;
     }
-
-    return 0;
   }
 
   string Part1() override { return std::to_string(DoWork(true)); }
