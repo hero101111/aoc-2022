@@ -1170,6 +1170,12 @@ public:
     return true;
   }
 
+  auto isSetAt(Point p) -> bool
+  {
+    T c;
+    return at(p, &c);
+  }
+
   auto at(Point p, T * const aOutVal) const -> bool
   {
     auto xData = data.find(p.x);
