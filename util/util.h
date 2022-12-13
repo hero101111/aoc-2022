@@ -4,7 +4,7 @@ using LL  = long long;
 using ULL = unsigned long long;
 
 template <typename T>
-bool _aoc_assert(T value, T expectedValue, string descr = "")
+bool _assert_aoc_helper(T value, T expectedValue, string descr = "")
 {
   if (expectedValue != value)
   {
@@ -14,15 +14,9 @@ bool _aoc_assert(T value, T expectedValue, string descr = "")
   return true;
 }
 
-#define aoc_assert(value, expectedValue, descr)          \
-  {                                                      \
-    if (!_aoc_assert(value, expectedValue, descr))       \
-      cout << " " __FILE__ << " : " << __LINE__ << endl; \
-  }
-
 #define aoc_assert(value, expectedValue)                     \
   {                                                          \
-    if (!_aoc_assert(value, expectedValue, ""s))             \
+    if (!_assert_aoc_helper(value, expectedValue, ""s))             \
       cout << "  " << __FILE__ << " : " << __LINE__ << endl; \
   }
 
