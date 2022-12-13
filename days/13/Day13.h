@@ -8,57 +8,41 @@ private:
   string           value;
   vector<ListItem> children;
 
-  enum class OrderValue
+  strong_ordering operator<=>(const ListItem & b)
   {
-    Less = 0,
-    Greater,
-    Equal
-  };
-
-  OrderValue GetOrder(const ListItem & a, const ListItem & b)
-  {
+    auto & a = *this;
     if (!a.value.empty() && !b.value.empty())
     {
-      if (stoi(a.value) < stoi(b.value))
-        return OrderValue::Less;
-      else if (stoi(a.value) > stoi(b.value))
-        return OrderValue::Greater;
-      else
-        return OrderValue::Equal;
-      // return stoi(a.value) <=> stoi(b.value);
+      return stoi(a.value) <=> stoi(b.value);
     }
     else if (a.value.empty() && !b.value.empty())
     {
       ListItem foo;
       foo.children.push_back(ListItem(b.value));
-      return GetOrder(a, foo);
+      return a <=> foo;
     }
     else if (b.value.empty() && !a.value.empty())
     {
       ListItem foo;
       foo.children.push_back(ListItem(a.value));
-      return GetOrder(foo, b);
+      return foo <=> b;
     }
     else
     {
       int sweepIndex = 0;
       while (true)
       {
-        if (sweepIndex >= a.children.size() && sweepIndex >= b.children.size())
-          return OrderValue::Equal;
-        if (sweepIndex >= a.children.size())
-          return OrderValue::Less;
-        if (sweepIndex >= b.children.size())
-          return OrderValue::Greater;
+        if (sweepIndex >= a.children.size() || sweepIndex >= b.children.size())
+          return a.children.size() <=> b.children.size();
 
-        auto order = GetOrder(a.children[sweepIndex], b.children[sweepIndex]);
-        if (order != OrderValue::Equal)
+        auto order = a.children[sweepIndex] <=> b.children[sweepIndex];
+        if (order != strong_ordering::equal)
           return order;
 
         sweepIndex++;
       }
     }
-    return OrderValue::Less;
+    return strong_ordering::less;
   }
 
 public:
@@ -131,7 +115,7 @@ public:
     return ret;
   }
 
-  bool operator<(const ListItem & b) { return OrderValue::Less == GetOrder(*this, b); }
+  bool operator<(const ListItem & b) { return strong_ordering::less == *this <=> b; }
 };
 
 class Day13 : public ISolutionDay
