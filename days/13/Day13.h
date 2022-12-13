@@ -15,13 +15,9 @@ private:
     {
       return stoi(a.value) <=> stoi(b.value);
     }
-    else if (!a.IsNumber() && b.IsNumber())
+    else if (a.IsNumber() ^ b.IsNumber())
     {
-      return a <=> ListFromValue(b.value);
-    }
-    else if (a.IsNumber() && !b.IsNumber())
-    {
-      return ListFromValue(a.value) <=> b;
+      return b.IsNumber() ? (a <=> ListFromValue(b.value)) : (ListFromValue(a.value) <=> b);
     }
     else
     {
