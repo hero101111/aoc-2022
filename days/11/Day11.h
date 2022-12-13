@@ -75,7 +75,7 @@ public:
     int round = 0;
     while (true)
     {
-      for (int i : rangeint(0, monkeys.size() - 1))
+      for (LL i : rangeint(0, monkeys.size() - 1))
       {
         auto & monkey = monkeys[i];
         for (auto it = monkey.items.begin(); it != monkey.items.end();)
