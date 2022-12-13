@@ -21,17 +21,14 @@ private:
     }
     else
     {
-      for (int sweepIndex = 0;; sweepIndex++)
+      for (int sweepIndex = 0; sweepIndex < min(a.children.size(), b.children.size()); sweepIndex++)
       {
-        if (sweepIndex >= min(a.children.size(), b.children.size()))
-          return a.children.size() <=> b.children.size();
-
-        auto order = a.children[sweepIndex] <=> b.children[sweepIndex];
-        if (order != strong_ordering::equal)
+        if (auto order = a.children[sweepIndex] <=> b.children[sweepIndex];
+            order != strong_ordering::equal)
           return order;
       }
     }
-    return strong_ordering::less;
+    return a.children.size() <=> b.children.size();
   }
 
 public:
