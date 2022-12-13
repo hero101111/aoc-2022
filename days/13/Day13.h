@@ -4,11 +4,10 @@
 
 struct ListItem
 {
-private:
   string           value;
   vector<ListItem> children;
 
-  strong_ordering operator<=>(const ListItem & b)
+  strong_ordering operator<=>(const ListItem & b) const
   {
     auto & a = *this;
     if (a.IsNumber() && b.IsNumber())
@@ -17,7 +16,10 @@ private:
     }
     else if (a.IsNumber() ^ b.IsNumber())
     {
-      return b.IsNumber() ? (a <=> ListFromValue(b.value)) : (ListFromValue(a.value) <=> b);
+      if (b.IsNumber())
+          return a <=> ListFromValue(b.value) ;
+        else
+            return ListFromValue(a.value) <=> b;
     }
     else
     {
@@ -31,7 +33,6 @@ private:
     return a.children.size() <=> b.children.size();
   }
 
-public:
   ListItem() {}
 
   ListItem(string number) { value = number; }
@@ -110,7 +111,7 @@ public:
     return ret;
   }
 
-  bool operator<(const ListItem & b) { return strong_ordering::less == *this <=> b; }
+  bool operator< (const ListItem & b) const { return strong_ordering::less == *this <=> b; }
 };
 
 class Day13 : public ISolutionDay

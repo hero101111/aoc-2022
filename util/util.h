@@ -2303,9 +2303,9 @@ auto findInMapByValue(map<KT, VT> & m, VT & val)
 
 #ifdef __APPLE__
 
-#define KINPUT   "/Users/gabriel/aoc/inputs/Day"
-#define KOUTPUT  "/Users/gabriel/aoc/output/output.txt"
-#define KVERBOSE "/Users/gabriel/aoc/output/verbose.txt"
+#define KINPUT   "/Users/gabriel/repos/aoc/inputs/Day"
+#define KOUTPUT  "/Users/gabriel/repos/aoc/output/output.txt"
+#define KVERBOSE "/Users/gabriel/repos/aoc/output/verbose.txt"
 
 #endif
 
