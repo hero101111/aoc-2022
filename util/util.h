@@ -157,7 +157,7 @@ void fprintf(string filePath, string message, bool append = false)
   }
   if (!message.empty())
   {
-    fOut << message << endl;
+    fOut << message;
   }
 }
 
