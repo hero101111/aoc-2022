@@ -4,19 +4,114 @@
 
 struct ListItem
 {
-  string value;
+private:
+  string           value;
   vector<ListItem> children;
-  
-  ListItem()
-  {    
-  }
-  
-  ListItem(string number)
+
+  enum class OrderValue
   {
-    value = number;
+    Less = 0,
+    Greater,
+    Equal
+  };
+
+  OrderValue GetOrder(const ListItem & a, const ListItem & b)
+  {
+    if (!a.value.empty() && !b.value.empty())
+    {
+      if (stoi(a.value) < stoi(b.value))
+        return OrderValue::Less;
+      else if (stoi(a.value) > stoi(b.value))
+        return OrderValue::Greater;
+      else
+        return OrderValue::Equal;
+      // return stoi(a.value) <=> stoi(b.value);
+    }
+    else if (a.value.empty() && !b.value.empty())
+    {
+      ListItem foo;
+      foo.children.push_back(ListItem(b.value));
+      return GetOrder(a, foo);
+    }
+    else if (b.value.empty() && !a.value.empty())
+    {
+      ListItem foo;
+      foo.children.push_back(ListItem(a.value));
+      return GetOrder(foo, b);
+    }
+    else
+    {
+      int sweepIndex = 0;
+      while (true)
+      {
+        if (sweepIndex >= a.children.size() && sweepIndex >= b.children.size())
+          return OrderValue::Equal;
+        if (sweepIndex >= a.children.size())
+          return OrderValue::Less;
+        if (sweepIndex >= b.children.size())
+          return OrderValue::Greater;
+
+        auto order = GetOrder(a.children[sweepIndex], b.children[sweepIndex]);
+        if (order != OrderValue::Equal)
+          return order;
+
+        sweepIndex++;
+      }
+    }
+    return OrderValue::Less;
   }
-  
-  string toString()
+
+public:
+  ListItem() {}
+
+  ListItem(string number) { value = number; }
+
+  static ListItem FromString(string aString)
+  {
+    stack<ListItem> itemStack;
+
+    size_t sweepIndex = 0;
+    while (true)
+    {
+      char c = aString[sweepIndex];
+      if (c == '[')
+      {
+        itemStack.push(ListItem());
+      }
+      else if (c == ']')
+      {
+        if (!itemStack.empty())
+        {
+          auto child = itemStack.top();
+          itemStack.pop();
+          if (!itemStack.empty())
+          {
+            auto & parent = itemStack.top();
+            parent.children.push_back(child);
+          }
+          else
+          {
+            return child;
+          }
+        }
+      }
+      else if (isdigit(c))
+      {
+        size_t numberEndIndex = sweepIndex;
+        while (isdigit(aString[numberEndIndex]))
+          numberEndIndex++;
+        string numberStr = aString.substr(sweepIndex, numberEndIndex - sweepIndex);
+        assert(!itemStack.empty());
+        auto & parent = itemStack.top();
+        auto   child  = ListItem(numberStr);
+        parent.children.push_back(child);
+        sweepIndex = numberEndIndex - 1;
+      }
+      sweepIndex += 1;
+    }
+  }
+
+  string ToString()
   {
     string ret = "[";
     if (value.empty())
@@ -25,7 +120,7 @@ struct ListItem
       {
         if (ret.size() > 1)
           ret += ",";
-        ret += c.toString();
+        ret += c.ToString();
       }
     }
     else
@@ -35,254 +130,69 @@ struct ListItem
     ret += "]";
     return ret;
   }
+
+  bool operator<(const ListItem & b) { return OrderValue::Less == GetOrder(*this, b); }
 };
 
 class Day13 : public ISolutionDay
 {
-private:
-  vector<string> mData;
-
 public:
   Day13() {}
 
   ~Day13() override {}
 
-  void ReadData()
-  {
-    mData.clear();
-    mData = rff(GetInputPath());
-  }
-
   string GetDay() override { return "13"; }
-  
-  ListItem parseStr(string s)
-  {
-    vector<ListItem> q;
-    q.reserve(1000);
-    
-    size_t i = 0, pi = 0;
-    while (true)
-    {
-      char c = s[i];
-      if (c == '[')
-      {
-        q.push_back(ListItem());
-        pi = i + 1;
-      }
-      else if (c == ']')
-      {
-        string piStr = s.substr(pi, i - pi);
-        if (piStr != "")
-        {
-          assert(!q.empty());
-          auto & parent = q.back();
-          auto child = ListItem(piStr);
-          parent.children.push_back(child);
-        }
-        
-        if (!q.empty())
-        {
-          auto child = q.back();
-          q.erase(q.end() - 1);
-          if (!q.empty())
-          {
-            auto & parent = q.back();
-            parent.children.push_back(child);
-          }
-          else
-          {
-            return child;
-          }
-          pi = i + 1;
-        }
-      }
-      else if (c == ',')
-      {
-        string piStr = s.substr(pi, i - pi);
-        if (piStr != "]" && piStr != "")
-        {
-          assert(!q.empty());
-          auto & parent = q.back();
-          auto child = ListItem(piStr);
-          parent.children.push_back(child);
-        }
-        pi = i + 1;
-      }
-      i += 1;
-    }
-    
-  }
-  
-  bool isRightOrder(const ListItem & a, const ListItem & b, bool & cont)
-  {
-    bool ret = true;
-    if (!a.value.empty() && !b.value.empty())
-    {
-      if (stoi(a.value) < stoi(b.value))
-        return true;
-      else if (stoi(a.value) > stoi(b.value))
-        return false;
-      else cont = true;
-    }
-    else if (a.value.empty() && !b.value.empty())
-    {
-      ListItem foo;
-      foo.children.push_back(ListItem(b.value));
-      return isRightOrder(a, foo, cont);
-    }
-    else if (b.value.empty() && !a.value.empty())
-    {
-      ListItem foo;
-      foo.children.push_back(ListItem(a.value));
-      return isRightOrder(foo, b, cont);
-    }
-    else
-    {
-      int aIndex = 0, bIndex = 0;
-      while (true)
-      {
-        if (a.children.size() + b.children.size() == 0)
-        {
-          cont = true;
-          return true;
-        }
-        if (aIndex >= a.children.size() && bIndex >= b.children.size())
-        {
-          cont = true;
-          return true;
-        }
-        if (aIndex >= a.children.size())
-          return true;
-        if (bIndex >= b.children.size())
-          return false;
-        auto itemA = a.children[aIndex];
-        auto itemB = b.children[bIndex];
-        bool cont = false;
-        bool rightOrder = isRightOrder(itemA, itemB, cont);
-        if (!cont && !rightOrder)
-          return false;
-        if (!cont && rightOrder)
-          return true;
-        
-        aIndex++;
-        bIndex++;
-      }
-    }
-    return true;
-  };
-  
-  bool isLessThan(const ListItem & a, const ListItem & b)
-  {
-    bool cont{false};
-    return isRightOrder(a, b, cont);
-  }
 
   LL DoWork1()
   {
     auto pairs = rffv(GetInputPath());
-  
+
     int index = 1;
-    LL ret = 0;
-    for (auto d : pairs)
+    LL  ret   = 0;
+    for (auto p : pairs)
     {
-      auto first = parseStr(d[0]);
-      auto second = parseStr(d[1]);
-      
-      auto firstString = first.toString();
-      auto secondString = second.toString();
-      
-      assert(d[0] == firstString);
-      assert(d[1] == secondString);
-      
-      if (index == 3)
-      {
-        int i = 0;
-      }
-      bool rightOrder = isLessThan(first, second);
+      bool rightOrder = ListItem::FromString(p[0]) < ListItem::FromString(p[1]);
       if (rightOrder)
-      {
         ret += index;
-        //fprintf(KVERBOSE, d[0] + "\n"s + d[1] + "\n\n"s, true);
-      }
-      else
-      {
-        int i = 0;
-        //isRightOrder(first, second);
-      }
-      index+=1;
+      index += 1;
     }
     return ret;
   }
 
   LL DoWork2()
   {
-    auto pairs = rffv(GetInputPath());
+    auto             pairs = rffv(GetInputPath());
     vector<ListItem> items;
-    
-    for (auto d : pairs)
+
+    for (auto p : pairs)
     {
-      auto first = parseStr(d[0]);
-      auto second = parseStr(d[1]);
+      auto first  = ListItem::FromString(p[0]);
+      auto second = ListItem::FromString(p[1]);
       items.push_back(first);
       items.push_back(second);
     }
-    items.push_back(parseStr("[[2]]"));
-    items.push_back(parseStr("[[6]]"));
-    
-    for (int i = 0; i < items.size() - 1; ++i)
-      for (int j = i + 1; j < items.size(); ++j)
-      {
-        auto a = items[i];
-        auto b = items[j];
-        
-        if (!isLessThan(a, b))
-        {
-          items[i] = b;
-          items[j] = a;
-        }
-      }
-    
-    auto z1 = parseStr("[9]");
-    auto z2 = parseStr("[[6]]");
-    auto isValid = isLessThan(z1, z2);
-    
-    for (int i = 0; i < items.size() - 1; ++i)
-    {
-      for (int j = i + 1; j < items.size(); ++j)
-        assert(isLessThan(items[i], items[j]));
-    }
-    //sort(begin(items), end(items), [&](const ListItem & a, const ListItem & b){ return isLessThan(a, b);});
-    
-    fprintf(KVERBOSE, "");
-    
+    items.push_back(ListItem::FromString("[[2]]"));
+    items.push_back(ListItem::FromString("[[6]]"));
+
+    sort(begin(items), end(items));
+
     int index = 1;
-    LL ret = 1;
+    LL  ret   = 1;
     for (auto & d : items)
     {
-      string dStr = d.toString();
-      fprintf(KVERBOSE, dStr, true);
+      string dStr = d.ToString();
       if (dStr == "[[2]]" || dStr == "[[6]]")
         ret *= index;
-      
+
       index += 1;
     }
-    
+
     return ret;
   }
 
-  string Part1() override
-  {
-    ReadData();
+  string Part1() override { return std::to_string(DoWork1()); }
 
-    return std::to_string(DoWork1());
-  }
-
-  string Part2() override
-  {
-    ReadData();
-
-    return std::to_string(DoWork2());
-  }
+  string Part2() override { return std::to_string(DoWork2()); }
 
   bool Test() override
   {
@@ -291,9 +201,8 @@ public:
     aoc_assert(Part2(), "140"s);
     mCurrentInput = "input";
     aoc_assert(Part1(), "6369"s);
-    aoc_assert(Part2(), "25800"s)
-    
-    
+    aoc_assert(Part2(), "25800"s);
+
     return true;
   }
 };
