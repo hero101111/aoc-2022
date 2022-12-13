@@ -11,35 +11,28 @@ private:
   strong_ordering operator<=>(const ListItem & b)
   {
     auto & a = *this;
-    if (!a.value.empty() && !b.value.empty())
+    if (a.IsNumber() && b.IsNumber())
     {
       return stoi(a.value) <=> stoi(b.value);
     }
-    else if (a.value.empty() && !b.value.empty())
+    else if (!a.IsNumber() && b.IsNumber())
     {
-      ListItem foo;
-      foo.children.push_back(ListItem(b.value));
-      return a <=> foo;
+      return a <=> ListFromValue(b.value);
     }
-    else if (b.value.empty() && !a.value.empty())
+    else if (a.IsNumber() && !b.IsNumber())
     {
-      ListItem foo;
-      foo.children.push_back(ListItem(a.value));
-      return foo <=> b;
+      return ListFromValue(a.value) <=> b;
     }
     else
     {
-      int sweepIndex = 0;
-      while (true)
+      for (int sweepIndex = 0;; sweepIndex++)
       {
-        if (sweepIndex >= a.children.size() || sweepIndex >= b.children.size())
+        if (sweepIndex >= min(a.children.size(), b.children.size()))
           return a.children.size() <=> b.children.size();
 
         auto order = a.children[sweepIndex] <=> b.children[sweepIndex];
         if (order != strong_ordering::equal)
           return order;
-
-        sweepIndex++;
       }
     }
     return strong_ordering::less;
@@ -49,6 +42,15 @@ public:
   ListItem() {}
 
   ListItem(string number) { value = number; }
+
+  bool IsNumber() const { return !value.empty(); }
+
+  static ListItem ListFromValue(ListItem aChild)
+  {
+    ListItem ret;
+    ret.children.push_back(aChild);
+    return ret;
+  }
 
   static ListItem FromString(string aString)
   {
