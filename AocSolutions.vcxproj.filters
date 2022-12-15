@@ -28,6 +28,9 @@
     <Filter Include="Header Files\Week4">
       <UniqueIdentifier>{be07ddd4-51f4-444d-98b4-e406bb3d53dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="z3bins">
+      <UniqueIdentifier>{c8824a95-523a-40d4-8225-27037ac58d6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -128,5 +131,61 @@
     <ClInclude Include="BigInt.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="util\z3\bin\libz3.dll">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\libz3.lib">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\libz3.pdb">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\libz3java.dll">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\libz3java.lib">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\Microsoft.Z3.deps.json">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\Microsoft.Z3.dll">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\Microsoft.Z3.pdb">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\Microsoft.Z3.xml">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\msvcp140.dll">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\msvcp140_1.dll">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\msvcp140_2.dll">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\msvcp140_atomic_wait.dll">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\msvcp140_codecvt_ids.dll">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\vcomp140.dll">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\vcruntime140.dll">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\vcruntime140_1.dll">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="util\z3\bin\z3.exe">
+      <Filter>z3bins</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>
