@@ -23,7 +23,6 @@ public:
 
   LL DoWork1()
   {
-    LL               ret = 0;
     DynamicMap<char> m;
 
     unordered_set<Point> sensors;
@@ -74,8 +73,7 @@ public:
 
     solver.check();
     auto solution = solver.get_model();
-    auto retValue = solution.eval(x * 4000000 + y).to_string();
-    return stoll(retValue);
+    return stoll(solution.eval(x * 4000000 + y).to_string());
   }
 
   string Part1() override
