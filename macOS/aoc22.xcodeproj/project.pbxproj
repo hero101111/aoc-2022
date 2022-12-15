@@ -7,22 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C068EF76294B714000B027AE /* libz3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C068EF75294B714000B027AE /* libz3.a */; };
+		C068EF78294B731B00B027AE /* libz3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C068EF77294B731B00B027AE /* libz3.dylib */; };
+		C068EF79294B737E00B027AE /* libz3.dylib in Copy Files */ = {isa = PBXBuildFile; fileRef = C068EF77294B731B00B027AE /* libz3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C0EBC751292D6B180031A98F /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0EBC750292D6B180031A98F /* Main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C0EBC73F292D6A410031A98F /* CopyFiles */ = {
+		C0EBC73F292D6A410031A98F /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
 			files = (
+				C068EF79294B737E00B027AE /* libz3.dylib in Copy Files */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			name = "Copy Files";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C068EF73294B712D00B027AE /* libz3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz3.dylib; path = ../util/z3/bin/libz3.dylib; sourceTree = "<group>"; };
+		C068EF75294B714000B027AE /* libz3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz3.a; path = ../util/z3/bin/libz3.a; sourceTree = "<group>"; };
+		C068EF77294B731B00B027AE /* libz3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz3.dylib; path = ../util/z3/bin/libz3.dylib; sourceTree = "<group>"; };
 		C0779FC5293EFE1800227F63 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util.h; path = ../util/util.h; sourceTree = "<group>"; };
 		C0EBC741292D6A410031A98F /* aoc22 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = aoc22; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0EBC74B292D6AAB0031A98F /* SolutionDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SolutionDay.h; path = ../SolutionDay.h; sourceTree = "<group>"; };
@@ -36,21 +44,34 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C068EF76294B714000B027AE /* libz3.a in Frameworks */,
+				C068EF78294B731B00B027AE /* libz3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C068EF72294B712D00B027AE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C068EF75294B714000B027AE /* libz3.a */,
+				C068EF73294B712D00B027AE /* libz3.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C0EBC738292D6A410031A98F = {
 			isa = PBXGroup;
 			children = (
 				C0779FC5293EFE1800227F63 /* util.h */,
 				C0EBC74B292D6AAB0031A98F /* SolutionDay.h */,
 				C0EBC750292D6B180031A98F /* Main.cpp */,
+				C068EF77294B731B00B027AE /* libz3.dylib */,
 				C0EBC74C292D6AB80031A98F /* stdafx.h */,
 				C0EBC74D292D6AC00031A98F /* days */,
 				C0EBC742292D6A410031A98F /* Products */,
+				C068EF72294B712D00B027AE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,7 +92,7 @@
 			buildPhases = (
 				C0EBC73D292D6A410031A98F /* Sources */,
 				C0EBC73E292D6A410031A98F /* Frameworks */,
-				C0EBC73F292D6A410031A98F /* CopyFiles */,
+				C0EBC73F292D6A410031A98F /* Copy Files */,
 			);
 			buildRules = (
 			);
@@ -241,8 +262,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CHRBV6V2B5;
 				ENABLE_HARDENED_RUNTIME = YES;
+				"LIBRARY_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/../util/z3/bin";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../util/z3/include";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 			};
 			name = Debug;
 		};
