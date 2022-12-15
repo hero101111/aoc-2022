@@ -133,9 +133,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="util\z3\bin\libz3.lib">
-      <Filter>z3bins</Filter>
-    </CopyFileToFolders>
     <CopyFileToFolders Include="util\z3\bin\libz3.dll">
       <Filter>z3bins</Filter>
     </CopyFileToFolders>
