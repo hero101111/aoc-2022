@@ -54,8 +54,6 @@ public:
 
   LL DoWork2()
   {
-    unordered_set<Point> beacons;
-
     z3::context c;
     z3::expr    x = c.int_const("x");
     z3::expr    y = c.int_const("y");
@@ -65,18 +63,13 @@ public:
     solver.add(y >= 0);
     solver.add(y <= 4000000);
 
-    LL maxy = 2000000;
     for (auto d : mData)
     {
-      auto [sx, sy, bx, by] = RegExMatch4(
-        d, R"(Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+))");
-      Point s{ sx, sy };
-      Point b{ bx, by };
+      auto [sx, sy, bx, by] = stoll(RegExMatch4(
+        d, R"(Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+))"));
 
-      beacons.insert(b);
-      auto dist = s.ManhattanDist(b);
-
-      solver.add(z3::abs(x - c.int_val(s.x)) + z3::abs(y - c.int_val(s.y)) > c.int_val(dist));
+      solver.add(z3::abs(x - c.int_val(sx)) + z3::abs(y - c.int_val(sy)) >
+                 c.int_val(Point{ sx, sy }.ManhattanDist(Point{ bx, by })));
     }
 
     solver.check();
