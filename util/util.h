@@ -16,7 +16,7 @@ bool _assert_aoc_helper(T value, T expectedValue, string descr = "")
 
 #define aoc_assert(value, expectedValue)                     \
   {                                                          \
-    if (!_assert_aoc_helper(value, expectedValue, ""s))             \
+    if (!_assert_aoc_helper(value, expectedValue, ""s))      \
       cout << "  " << __FILE__ << " : " << __LINE__ << endl; \
   }
 
@@ -82,9 +82,9 @@ auto setContains(const set<T> & big, const T & val) -> bool
 }
 
 template <typename T>
-auto getDifference(set<T> a, set<T> b) -> set<T>
+auto getDifference(T a, T b) -> T
 {
-  set<T> ret;
+  T ret;
   for (auto el : a)
   {
     if (b.find(el) == end(b))
@@ -717,6 +717,31 @@ struct Point
     ret.push_back(Down().Left());
     ret.push_back(Down().Right());
 
+    return ret;
+  }
+
+  [[nodiscard]] auto GetNeighbours(int level) -> vector<Point>
+  {
+    auto          me = *this;
+    vector<Point> ret;
+    while (level >= 1)
+    {
+      vector<Point> corners = { Point{ -level, -level }, Point{ level, -level },
+                                Point{ level, level }, Point{ -level, level } };
+      for (auto & c : corners)
+        c = c + me;
+
+      for (auto e1 = corners[0].GetTo(corners[1]); auto e : e1)
+        ret.push_back(e);
+      for (auto e1 = corners[1].GetTo(corners[2]); auto e : e1)
+        ret.push_back(e);
+      for (auto e1 = corners[2].GetTo(corners[3]); auto e : e1)
+        ret.push_back(e);
+      for (auto e1 = corners[3].GetTo(corners[0]); auto e : e1)
+        ret.push_back(e);
+
+      level -= 1;
+    }
     return ret;
   }
 

@@ -30,6 +30,32 @@ public:
     unordered_set<Point> beacons;
     unordered_set<Point> cannotList;
 
+    LL maxy = 2000000;
+    for (auto d : mData)
+    {
+      auto [sx, sy, bx, by] = RegExMatch4(
+        d, R"(Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+))");
+      Point s{ sx, sy };
+      Point b{ bx, by };
+
+      sensors.insert(s);
+      beacons.insert(b);
+      auto dist = s.ManhattanDist(b);
+
+      for (auto x : rangeint(s.x - dist, s.x + dist + 1))
+      {
+        if (s.ManhattanDist(Point{ x, maxy }) <= dist)
+          cannotList.insert(Point{ x, maxy });
+      }
+    }
+
+    return getDifference(cannotList, beacons).size();
+  }
+
+  LL DoWork2()
+  {
+    unordered_set<Point> beacons;
+
     z3::context c;
     z3::expr    x = c.int_const("x");
     z3::expr    y = c.int_const("y");
@@ -47,34 +73,16 @@ public:
       Point s{ sx, sy };
       Point b{ bx, by };
 
-      sensors.insert(s);
       beacons.insert(b);
       auto dist = s.ManhattanDist(b);
-
-      /*for (auto x : rangeint(s.x - dist, s.x + dist + 1))
-      {
-        if (s.ManhattanDist(Point{ x, maxy }) <= dist)
-          cannotList.insert(Point{ x, maxy });
-      }*/
 
       solver.add(z3::abs(x - c.int_val(s.x)) + z3::abs(y - c.int_val(s.y)) > c.int_val(dist));
     }
 
-    // auto diff = getDifference(cannotList, beacons);
-    // ret       = diff.size();
-
     solver.check();
     auto solution = solver.get_model();
     auto retValue = solution.eval(x * 4000000 + y).to_string();
-    ret           = stoll(retValue);
-    // m.printf();
-    return ret;
-  }
-
-  LL DoWork2()
-  {
-    LL ret = 152;
-    return ret;
+    return stoll(retValue);
   }
 
   string Part1() override
