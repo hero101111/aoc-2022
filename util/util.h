@@ -216,6 +216,64 @@ auto stoll(const vector<string> & aVec) -> vector<LL>
   return ret;
 }
 
+tuple<LL> stoll(const tuple<string> & aVec)
+{
+  tuple<LL> ret;
+  get<0>(ret) = stoll(get<0>(aVec));
+  return ret;
+}
+
+tuple<LL, LL> stoll(const tuple<string, string> & aVec)
+{
+  tuple<LL, LL> ret;
+  get<0>(ret) = stoll(get<0>(aVec));
+  get<1>(ret) = stoll(get<1>(aVec));
+  return ret;
+}
+
+tuple<LL, LL, LL> stoll(const tuple<string, string, string> & aVec)
+{
+  tuple<LL, LL, LL> ret;
+  get<0>(ret) = stoll(get<0>(aVec));
+  get<1>(ret) = stoll(get<1>(aVec));
+  get<2>(ret) = stoll(get<2>(aVec));
+  return ret;
+}
+
+tuple<LL, LL, LL, LL> stoll(const tuple<string, string, string, string> & aVec)
+{
+  tuple<LL, LL, LL, LL> ret;
+  get<0>(ret) = stoll(get<0>(aVec));
+  get<1>(ret) = stoll(get<1>(aVec));
+  get<2>(ret) = stoll(get<2>(aVec));
+  get<3>(ret) = stoll(get<3>(aVec));
+  return ret;
+}
+
+tuple<LL, LL, LL, LL, LL> stoll(const tuple<string, string, string, string, string> & aVec)
+{
+  tuple<LL, LL, LL, LL, LL> ret;
+  get<0>(ret) = stoll(get<0>(aVec));
+  get<1>(ret) = stoll(get<1>(aVec));
+  get<2>(ret) = stoll(get<2>(aVec));
+  get<3>(ret) = stoll(get<3>(aVec));
+  get<4>(ret) = stoll(get<4>(aVec));
+  return ret;
+}
+
+tuple<LL, LL, LL, LL, LL, LL> stoll(
+  const tuple<string, string, string, string, string, string> & aVec)
+{
+  tuple<LL, LL, LL, LL, LL, LL> ret;
+  get<0>(ret) = stoll(get<0>(aVec));
+  get<1>(ret) = stoll(get<1>(aVec));
+  get<2>(ret) = stoll(get<2>(aVec));
+  get<3>(ret) = stoll(get<3>(aVec));
+  get<4>(ret) = stoll(get<4>(aVec));
+  get<5>(ret) = stoll(get<5>(aVec));
+  return ret;
+}
+
 auto sinDegress(int angle) -> double
 {
   if (angle == 0)
