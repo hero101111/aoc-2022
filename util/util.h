@@ -1433,9 +1433,9 @@ public:
 
   [[nodiscard]] auto empty() const -> bool { return data.empty(); }
 
-  [[nodiscard]] auto width() const -> long long { return abs(max_x - min_x) + 1; }
+  [[nodiscard]] auto width() const -> long long { return empty() ? 0 : abs(max_x - min_x) + 1; }
 
-  [[nodiscard]] auto height() const -> long long { return abs(max_y - min_y) + 1; }
+  [[nodiscard]] auto height() const -> long long { return empty() ? 0 : abs(max_y - min_y) + 1; }
 
   void clear() { *this = DynamicMap<T>(); }
 
@@ -1456,9 +1456,8 @@ public:
     return ret;
   }
 
-  auto for_each(function<bool(Point, T)> func) -> size_t
+  auto for_each(function<void(Point, T)> func) -> void
   {
-    size_t ret = 0;
     for (auto i : range_x())
     {
       for (auto j : range_y())
@@ -1466,11 +1465,83 @@ public:
         T data;
         if (at({ i, j }, &data))
         {
-          ret += func({ i, j }, data);
+          func({ i, j }, data);
         }
       }
     }
+  }
+
+  auto first_if(function<bool(Point, T)> func) -> optional<T>
+  {
+    bool found{ false };
+    for (auto i : range_x())
+    {
+      for (auto j : range_y())
+      {
+        T data;
+        if (at({ i, j }, &data))
+        {
+          return func({ i, j }, data);
+        }
+      }
+    }
+    return {};
+  }
+
+  auto clone_if(function<bool(Point, T)> func) -> DynamicMap<T>
+  {
+    DynamicMap<T> ret;
+    for_each(
+      [&](Point p, T c)
+      {
+        if (func(p, c))
+          ret[p] = c;
+        return true;
+      });
     return ret;
+  }
+
+  auto transform(function<tuple<bool, Point, T>(Point, T)> func) -> DynamicMap<T>
+  {
+    DynamicMap<T> ret;
+    for_each(
+      [&](Point p, T c)
+      {
+        auto tr         = func(p, c);
+        bool shouldCopy = get<0>(tr);
+        if (shouldCopy)
+          ret[get<1>(tr)] = get<2>(tr);
+        return true;
+      });
+    return ret;
+  }
+
+  auto copy_from(DynamicMap<T> & aOther, function<bool(Point, T)> func = nullptr) -> size_t
+  {
+    size_t ret{ 0 };
+    ret = aOther.count_if(
+      [&](Point p, T c)
+      {
+        bool copy{ true };
+        if (func != nullptr)
+          copy = func(p, c);
+        if (copy)
+          (*this)[p] = c;
+        return copy;
+      });
+    return ret;
+  }
+
+  DynamicMap<T> & operator+(DynamicMap<T> & aOther)
+  {
+    copy_from(aOther);
+    return *this;
+  }
+
+  DynamicMap<T> & operator+=(DynamicMap<T> & aOther)
+  {
+    copy_from(aOther);
+    return *this;
   }
 
   auto for_eachYX(function<bool(Point, T)> func) -> size_t
@@ -1488,16 +1559,6 @@ public:
       }
     }
     return ret;
-  }
-
-  void transform(function<T(Point, T)> func)
-  {
-    for_each(
-      [&](Point p, T v)
-      {
-        this->operator[](p) = func(p, v);
-        return true;
-      });
   }
 
   void insertAt(const DynamicMap<T> & aOther, Point originToInsertAt)
@@ -1520,10 +1581,27 @@ public:
   auto count() -> size_t
   {
     return for_each(
-      [](T &)
+      [](T)
       {
         return true;
       });
+  }
+
+  auto count_if(function<bool(Point, T)> func) -> size_t
+  {
+    size_t ret = 0;
+    for (auto i : range_x())
+    {
+      for (auto j : range_y())
+      {
+        T data;
+        if (at({ i, j }, &data))
+        {
+          ret += func({ i, j }, data);
+        }
+      }
+    }
+    return ret;
   }
 
   auto count_occurence(T val) -> size_t
@@ -1656,8 +1734,11 @@ public:
     return ret;
   }
 
-  void printf(
-    std::ostream & st, char sep = ' ', char notSet = ' ', bool append = false, string prologue = "")
+  void printf(std::ostream & st,
+              const char *   sep      = "",
+              char           notSet   = ' ',
+              bool           append   = false,
+              string         prologue = "")
   {
     if (append)
     {
@@ -1684,8 +1765,11 @@ public:
     }
   }
 
-  void printf(
-    string filePath, char sep = ' ', char notSet = ' ', bool append = false, string prologue = "")
+  void printf(string       filePath,
+              const char * sep      = "",
+              char         notSet   = ' ',
+              bool         append   = false,
+              string       prologue = "")
   {
     ofstream fOut;
     fOut.open(filePath, append ? ios_base::app : ios_base::out);

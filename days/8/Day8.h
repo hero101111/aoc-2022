@@ -25,7 +25,7 @@ public:
 
   LL DoWork1()
   {
-    return mMap.for_each(
+    return mMap.count_if(
       [&](Point p, LL)
       {
         for (auto dir : WalkDirections)
@@ -72,7 +72,6 @@ public:
       [&](Point p, LL v)
       {
         maxScore = max(maxScore, getScenicScore(p));
-        return true;
       });
 
     return maxScore;

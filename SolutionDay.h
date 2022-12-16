@@ -35,4 +35,18 @@ public:
     assert(day != "0");
     return KINPUT + day + "/" + mCurrentInput + ".txt";
   };
+
+  auto GetTestPath() -> string
+  {
+    const string day = GetDay();
+    assert(day != "0");
+    return KINPUT + day + "/test.txt";
+  };
+
+  auto GetNamedFile(string name) -> string
+  {
+    const string day = GetDay();
+    assert(day != "0");
+    return KINPUT + day + "/" + name + ".txt";
+  }
 };
