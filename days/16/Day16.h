@@ -36,57 +36,10 @@ struct hash<tuple<string, string, int, int, set<string>, set<string>>>
   }
 };
 
-template <>
-struct hash<tuple<string, int, set<string>>>
-{
-  auto operator()(const tuple<string, int, set<string>> & k) const -> std::size_t
-  {
-    string s;
-    for (auto x : get<2>(k))
-      s += x;
-
-    s += get<0>(k) + to_string(get<1>(k));
-
-    return hash<string>()(s);
-  }
-};
-
-template <>
-struct hash<tuple<string, string, int, int, set<string>, set<string>>>
-{
-  auto operator()(const tuple<string, string, int, int, set<string>, set<string>> & k) const
-    -> std::size_t
-  {
-    string s;
-    for (auto x : get<5>(k))
-      s += x;
-    s += "__";
-    for (auto x : get<4>(k))
-      s += x;
-
-    s += get<0>(k) + "_" + get<1>(k) + to_string(get<2>(k)) + "_" + to_string(get<3>(k));
-
-    return hash<string>()(s);
-  }
-};
-
 class Day16 : public ISolutionDay
 {
 private:
   vector<string> mData;
-
-  Graph<string> g{ 60 };
-
-  vector<string>                                               valves;
-  vector<string>                                               rightValves;
-  unordered_map<string, LL>                                    flows;
-  unordered_map<string, unordered_set<string>>                 tunnels;
-  unordered_map<string, unordered_map<string, vector<string>>> roads;
-
-  unordered_map<tuple<string, int, set<string>>, pair<LL, set<string>>> hashMap;
-  unordered_map<tuple<string, string, int, int, set<string>, set<string>>,
-                tuple<LL, set<string>, set<string>>>
-    hashMap2;
 
   Graph<string> g{ 60 };
 
@@ -308,45 +261,6 @@ public:
 
   LL DoWork1()
   {
-    for (auto d : mData)
-    {
-      auto [valve, flow, conn] =
-        RegExMatch3(d, R"(Valve (.+) has flow rate=(.+); tunnels? leads? to valves? (.+))");
-      vector<string> connections;
-      for (auto t : tok(conn, ','))
-        connections.push_back(trim(t));
-
-      flows[valve] = stoll(flow);
-      for (auto c : connections)
-      {
-        g.AddEdge(valve, c, 1);
-        tunnels[valve].insert(c);
-      }
-      valves.push_back(valve);
-    }
-
-    for (auto p : valves)
-    {
-      for (auto q : valves)
-      {
-        if (p != q)
-        {
-          auto road = g.GetShortestPath(p, q);
-          road.erase(road.begin());
-          roads[p][q] = road;
-        }
-      }
-    }
-
-    LL t = 0;
-    for (auto i : flows)
-      t += i.second;
-
-    // auto topoSort = g.SortTopologically();
-
-    auto ret = solve(0, "AA", {});
-
-    return get<0>(ret);
     for (auto d : mData)
     {
       auto [valve, flow, conn] =
