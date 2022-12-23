@@ -576,23 +576,24 @@ struct Point
     return s;
   }
 
-  [[nodiscard]] auto FromOrientation(char orientation) const -> Point
+  [[nodiscard]] auto FromOrientation(string orientation) const -> Point
   {
-    switch (orientation)
-    {
-    case 'N':
-    case 'n':
+    if (orientation == "N")
       return Up();
-    case 'e':
-    case 'E':
+    if (orientation == "E")
       return Right();
-    case 'w':
-    case 'W':
+    if (orientation == "W")
       return Left();
-    case 's':
-    case 'S':
+    if (orientation == "S")
       return Down();
-    }
+    if (orientation == "NE")
+      return Up().Right();
+    if (orientation == "SE")
+      return Down().Right();
+    if (orientation == "NW")
+      return Up().Left();
+    if (orientation == "SW")
+      return Down().Left();
     return *this;
   }
 
@@ -708,6 +709,20 @@ struct Point
       return Down();
     }
     return *this;
+  }
+
+  static auto DirectionOpposite(char dir) -> char
+  {
+    char ret = dir;
+    if (dir == 'l')
+      ret = 'r';
+    if (dir == 'r')
+      ret = 'l';
+    if (dir == 'u')
+      ret = 'd';
+    if (dir == 'd')
+      ret = 'u';
+    return ret;
   }
 
   static auto RotateDirection(char c, bool left) -> char
