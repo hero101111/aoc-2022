@@ -1423,10 +1423,14 @@ public:
         bool theyHave = other.at(p, &theirV);
 
         if (IHave != theyHave)
+        {
           return false;
+        }
 
-        if (myV != theirV)
+        if (IHave && myV != theirV)
+        {
           return false;
+        }
       }
     }
     return true;
