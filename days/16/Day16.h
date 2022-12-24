@@ -2,10 +2,20 @@
 
 #include "SolutionDay.h"
 
+using OpenedSet       = set<string>;
+using OpenedSetElef   = set<string>;
+using OpenedInfoPart1 = pair<LL, OpenedSet>;
+using OpenedInfoPart2 = tuple<LL, OpenedSet, OpenedSetElef>;
+
+using Part1HashT    = tuple<string, int, OpenedSet>;
+using Part2HashT    = tuple<string, string, int, int, OpenedSet, OpenedSetElef>;
+using Part1HashMapT = unordered_map<Part1HashT, OpenedInfoPart1>;
+using Part2HashMapT = unordered_map<Part2HashT, OpenedInfoPart2>;
+
 template <>
-struct hash<tuple<string, int, set<string>>>
+struct hash<Part1HashT>
 {
-  auto operator()(const tuple<string, int, set<string>> & k) const -> std::size_t
+  auto operator()(const Part1HashT & k) const -> std::size_t
   {
     string s;
     for (auto x : get<2>(k))
@@ -18,10 +28,9 @@ struct hash<tuple<string, int, set<string>>>
 };
 
 template <>
-struct hash<tuple<string, string, int, int, set<string>, set<string>>>
+struct hash<Part2HashT>
 {
-  auto operator()(const tuple<string, string, int, int, set<string>, set<string>> & k) const
-    -> std::size_t
+  auto operator()(const Part2HashT & k) const -> std::size_t
   {
     string s;
     for (auto x : get<5>(k))
@@ -49,10 +58,8 @@ private:
   unordered_map<string, unordered_set<string>>                 tunnels;
   unordered_map<string, unordered_map<string, vector<string>>> roads;
 
-  unordered_map<tuple<string, int, set<string>>, pair<LL, set<string>>> hashMap;
-  unordered_map<tuple<string, string, int, int, set<string>, set<string>>,
-                tuple<LL, set<string>, set<string>>>
-    hashMap2;
+  Part1HashMapT hashMap;
+  Part2HashMapT cachePart2;
 
 public:
   Day16() {}
@@ -69,15 +76,7 @@ public:
     tunnels.clear();
     roads.clear();
     hashMap.clear();
-    hashMap2.clear();
-    g = Graph<string>{ 60 };
-    valves.clear();
-    rightValves.clear();
-    flows.clear();
-    tunnels.clear();
-    roads.clear();
-    hashMap.clear();
-    hashMap2.clear();
+    cachePart2.clear();
     g = Graph<string>{ 60 };
   }
 
@@ -161,83 +160,70 @@ public:
 
   //-------------------------------------------------------------------------------
 
-  tuple<LL, set<string>, set<string>> solve2(int         minute,
-                                             int         minuteElef,
-                                             string      node,
-                                             string      elef,
-                                             set<string> opened,
-                                             set<string> openedElef)
+  OpenedInfoPart2 solve2(int           minute,
+                         int           minuteElef,
+                         string        node,
+                         string        elef,
+                         OpenedSet     opened,
+                         OpenedSetElef openedElef)
   {
+    auto key = make_tuple(node, elef, minute, minuteElef, opened, openedElef);
+    if (cachePart2.count(key) > 0)
+    {
+      return cachePart2[key];
+    }
+
     bool justOpened     = false;
     bool justOpenedElef = false;
 
-    if (!contains(opened, node))
-    {
-      justOpened = true;
-      opened.insert(node);
-    }
-    if (!contains(openedElef, elef))
-    {
-      justOpenedElef = true;
-      openedElef.insert(elef);
-    }
+    openedElef.insert(elef);
+    opened.insert(node);
 
-    set<string>                         retVisited     = opened;
-    set<string>                         retVisitedElef = openedElef;
-    tuple<LL, set<string>, set<string>> maxRet;
-    LL                                  max = -1;
+    OpenedInfoPart2 maxRet;
     for (auto newNode : rightValves)
     {
+      if (opened.count(newNode) > 0)
+        continue;
+      if (openedElef.count(newNode) > 0)
+        continue;
+
+      auto & road    = roads[node][newNode];
+      LL     newTime = minute + road.size() + 1;
+
       for (auto newElef : rightValves)
       {
-        // clang-format off
-        if (newNode != newElef &&
-            newNode != node    && 
-            newElef != elef    &&
-          opened.find(newNode)     == end(opened)     &&
-          opened.find(newElef)     == end(opened)     &&
-          openedElef.find(newElef) == end(openedElef) &&
-          openedElef.find(newNode) == end(openedElef))
-        // clang-format on
-        {
-          auto & road        = roads[node][newNode];
-          auto & roadElef    = roads[elef][newElef];
-          LL     newTime     = minute + road.size() + 1;
-          LL     newTimeElef = minuteElef + roadElef.size() + 1;
-          //  if (newTime <= 26 || newTimeElef <= 26)
-          {
-            tuple<LL, set<string>, set<string>> pathPressure;
-            if (hashMap2.find(make_tuple(newNode, newElef, newTime, newTimeElef, opened,
-                                         openedElef)) != end(hashMap2))
-            {
-              pathPressure =
-                hashMap2[make_tuple(newNode, newElef, newTime, newTimeElef, opened, openedElef)];
-            }
-            else
-            {
-              pathPressure = solve2(newTime, newTimeElef, newNode, newElef, opened, openedElef);
-              hashMap2[make_tuple(newNode, newElef, newTime, newTimeElef, opened, openedElef)] =
-                pathPressure;
-            }
+        if (opened.count(newElef) > 0)
+          continue;
+        if (openedElef.count(newElef) > 0)
+          continue;
+        if (newElef == newNode)
+          continue;
 
-            if (get<0>(pathPressure) >= max)
-            {
-              max    = get<0>(pathPressure);
-              maxRet = pathPressure;
-            }
-          }
+        auto & roadElef    = roads[elef][newElef];
+        LL     newTimeElef = minuteElef + roadElef.size() + 1;
+
+        // if (newTime <= 26 && newTimeElef <= 26)
+        {
+          //  cout << newTime << " " << newTimeElef << endl;
+          OpenedInfoPart2 pathPressure =
+            solve2(newTime, newTimeElef, newNode, newElef, opened, openedElef);
+
+          if (get<0>(pathPressure) > get<0>(maxRet))
+            maxRet = pathPressure;
         }
       }
     }
 
     LL crtPressure = 0;
 
+    OpenedSet     retVisited     = opened;
+    OpenedSetElef retVisitedElef = openedElef;
     // auto retOpened = opened;
-    if (max > -1)
+    if (get<0>(maxRet) > 0)
     {
       // for (auto p : maxRet.second)
       //   retOpened.insert(p);
-      crtPressure += max;
+      crtPressure += get<0>(maxRet);
 
       for (auto p : get<1>(maxRet))
         retVisited.insert(p);
@@ -245,17 +231,20 @@ public:
         retVisitedElef.insert(p);
     }
 
-    if (justOpened)
     {
       auto fn = flows[node];
       crtPressure += fn * (26 - minute);
     }
-    if (justOpenedElef)
+    //  if (justOpenedElef)
     {
       auto fn = flows[elef];
       crtPressure += fn * (26 - minuteElef);
     }
     //   hash[make_tuple(node, opened)] = crtPressure;
+
+    key             = make_tuple(node, elef, minute, minuteElef, opened, openedElef);
+    cachePart2[key] = make_tuple(crtPressure, retVisited, retVisitedElef);
+
     return make_tuple(crtPressure, retVisited, retVisitedElef);
   }
 
@@ -347,14 +336,14 @@ public:
 
     for (auto v : valveSet)
     {
-      if (v != "AA")
-        rightValves.push_back(v);
+      // if (v != "AA")
+      rightValves.push_back(v);
     }
 
-    t = 0;
-    for (auto i : rightValves)
-      t += flows[i];
-    cout << "T = " << t << endl;
+    /* t = 0;
+     for (auto i : rightValves)
+       t += flows[i];
+     cout << "T = " << t << endl;*/
 
     auto valvesSolution2 = solve2(0, 0, "AA", "AA", {}, {});
 
@@ -384,12 +373,12 @@ public:
   bool Test() override
   {
     mCurrentInput = "test";
-    aoc_assert(Part1(), "1651"s);
+    // aoc_assert(Part1(), "1651"s);
     aoc_assert(Part2(), "1707"s);
-    mCurrentInput = "input";
-    aoc_assert(Part1(), "2056"s);
-    aoc_assert(Part2(), "2513"s);
-    //    aoc_assert(Part2() != "");
+    // mCurrentInput = "input";
+    // aoc_assert(Part1(), "2056"s);
+    // aoc_assert(Part2(), "2513"s);
+    ////    aoc_assert(Part2() != "");
     return true;
   }
 };
