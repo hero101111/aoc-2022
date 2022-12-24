@@ -1490,9 +1490,8 @@ public:
     }
   }
 
-  auto first_if(function<bool(Point, T)> func) -> optional<T>
+  auto first_if(function<bool(Point, T)> func) -> optional<pair<Point, T>>
   {
-    bool found{ false };
     for (auto i : range_x())
     {
       for (auto j : range_y())
@@ -1500,11 +1499,12 @@ public:
         T data;
         if (at({ i, j }, &data))
         {
-          return func({ i, j }, data);
+          if (func({ i, j }, data))
+            return make_pair(Point{ i, j }, data);
         }
       }
     }
-    return {};
+    return nullopt;
   }
 
   auto clone_if(function<bool(Point, T)> func) -> DynamicMap<T>
