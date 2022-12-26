@@ -262,11 +262,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = CHRBV6V2B5;
 				ENABLE_HARDENED_RUNTIME = YES;
 				"LIBRARY_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/../util/z3/bin";
+				PRODUCT_BUNDLE_IDENTIFIER = roadsdt.aoc22;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../util/z3/include";
@@ -278,10 +280,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = CHRBV6V2B5;
 				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = roadsdt.aoc22;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 			};
